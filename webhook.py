@@ -155,7 +155,8 @@ class Webhook(Resource):
         # if ('event' in data):
         #     if(data["event"] == 'message'):
         #         # message_db = self.get_message(1)
-        one_id = data['source']['one_id']
+        # one_id = data['source']['one_id']
+        one_id = 6336366888
         #         dissplay_name = data['source']['display_name']
 
         #         recv_msg = data['message']['text']
