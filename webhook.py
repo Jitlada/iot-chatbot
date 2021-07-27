@@ -93,9 +93,7 @@ class Webhook(Resource):
     def get_device(self, one_id):
         TAG = "get_device:"
         database = Database()
-        cmd = """SELECT devices.device_name FROM `devices` 
-        FROM devices 
-        WHERE True"""
+        cmd = """SELECT devices.device_name FROM `devices` """
         covid_res = database.getData(cmd)
         # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
         return covid_res
