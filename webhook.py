@@ -152,45 +152,46 @@ class Webhook(Resource):
         t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
         t.start()
 
-        if ('event' in data):
-            if(data["event"] == 'message'):
-                # message_db = self.get_message(1)
-                one_id = data['source']['one_id']
-                dissplay_name = data['source']['display_name']
+        # if ('event' in data):
+        #     if(data["event"] == 'message'):
+        #         # message_db = self.get_message(1)
+        one_id = data['source']['one_id']
+        #         dissplay_name = data['source']['display_name']
 
-                recv_msg = data['message']['text']
-                print(TAG, "recv_msg=", recv_msg)
+        #         recv_msg = data['message']['text']
+        #         print(TAG, "recv_msg=", recv_msg)
 
-                one_email = data['source']['email']
-                if(not self.is_user_exist(one_email)):
-                    add_user = self.add_new_user(
-                        one_email, dissplay_name, one_id)
-                    print(TAG, "add=new_user=", add_user)
-                    self.send_msg(one_id, "ยินดีให้บริการค่ะ")
-                    return module.success()
+        #         one_email = data['source']['email']
+        #         if(not self.is_user_exist(one_email)):
+        #             add_user = self.add_new_user(
+        #                 one_email, dissplay_name, one_id)
+        #             print(TAG, "add=new_user=", add_user)
+        #             self.send_msg(one_id, "ยินดีให้บริการค่ะ")
+        #             return module.success()
 
-                sendmessage_body = {
-                    "to": data['source']['one_id'],
-                    "bot_id": self.onechatbot_id,
-                    "type": "text",
-                    "message": ['result'][0]['result'][0]['message'],
-                    "custom_notification": "ตอบกลับข้อความคุณครับ"
-                }
-                sendmessage = requests.post(
-                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-                self.menu_send(one_id)
-                return module.success()
+        sendmessage_body = {
+            "to": data['source']['one_id'],
+            "bot_id": self.onechatbot_id,
+            "type": "text",
+            "message": ['result'][0]['result'][0]['message'],
+            "custom_notification": "ตอบกลับข้อความคุณครับ"
+        }
+        sendmessage = requests.post(
+            self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+        self.menu_send(one_id)
+        print("debug onechat response :" + json.dumps(sendmessage.json()))
+        return module.success()
 
-            elif(data["event"] == 'add_friend'):
-                one_id = data['source']['one_id']
-                dissplay_name = data['source']['display_name']
-                one_email = data['source']['email']
-                if(not self.is_user_exist(one_email)):
-                    add_user = self.add_new_user(
-                        one_email, dissplay_name, one_id)
-                    print(TAG, "add=new_user=", add_user)
-                    self.send_msg(one_id, "ขอบคุณที่เพิ่มเพื่อนค่ะ")
-                return module.success()
+        #     elif(data["event"] == 'add_friend'):
+        #         one_id = data['source']['one_id']
+        #         dissplay_name = data['source']['display_name']
+        #         one_email = data['source']['email']
+        #         if(not self.is_user_exist(one_email)):
+        #             add_user = self.add_new_user(
+        #                 one_email, dissplay_name, one_id)
+        #             print(TAG, "add=new_user=", add_user)
+        #             self.send_msg(one_id, "ขอบคุณที่เพิ่มเพื่อนค่ะ")
+        #         return module.success()
 
     def get(self):
         args = request.args
