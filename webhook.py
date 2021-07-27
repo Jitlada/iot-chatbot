@@ -19,21 +19,21 @@ class Webhook(Resource):
     sendmessage_url = "https://chat-api.one.th/message/api/v1/push_message"
     sendmessage_headers = {"Authorization": onechat_dev_token}
 
-    # def send_msg(self, one_id, reply_msg):
-    #     TAG = "send_msg:"
+    def send_msg(self, one_id, reply_msg):
+        TAG = "send_msg:"
 
-    #     payload = {
-    #         "to": one_id,
-    #         "bot_id": self.beaconbot_id,
-    #         "type": "text",
-    #         "message": reply_msg,
-    #         "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
-    #     }
+        payload = {
+            "to": one_id,
+            "bot_id": self.beaconbot_id,
+            "type": "text",
+            "message": reply_msg,
+            "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
+        }
 
-    #     print(TAG, "payload=", payload)
-    #     r = requests.post(self.sendmessage_url, json=payload,
-    #                       headers=self.sendmessage_headers, verify=False)
-    #     return r
+        print(TAG, "payload=", payload)
+        r = requests.post(self.sendmessage_url, json=payload,
+                          headers=self.sendmessage_headers, verify=False)
+        return r
 
     def send_quick_reply(self, one_id, msg, payload):
         TAG = "send_quick_reply:"
@@ -98,6 +98,48 @@ class Webhook(Resource):
         # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
         return covid_res
 
+    def package_forward(self, package, uri):
+        TAG = "package_forward:"
+        print(TAG, "forward to dev")
+        try:
+            r = requests.post(uri, json=package, verify=False)
+            print(TAG, "forward status=", r.status_code)
+        except:
+            print(TAG), "no connection found!"
+
+    def is_user_exist(self, one_email):
+        TAG = "is_user_exist:"
+        cmd = """SELECT users.one_email FROM users WHERE users.one_email='%s' """ % (
+            one_email)
+        database = Database()
+        res = database.getData(cmd)
+        print(TAG, "res=", res)
+        if(res[0]['len'] > 0):
+            return True
+        else:
+            return False
+
+    def is_oneid_exist(self, one_id):
+        TAG = "is_oneid_exist:"
+        cmd = """SELECT users.one_id FROM users WHERE users.one_id='%s' """ % (
+            one_id)
+        database = Database()
+        res = database.getData(cmd)
+        print(TAG, "res=", res)
+        if(res[0]['len'] > 0):
+            return True
+        else:
+            return False
+
+    def add_new_user(self, email, name, one_id):
+        TAG = "add_new_user:"
+        database = Database()
+        print(TAG, "add user to our system")
+        sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', '%s')""" \
+            % (email, name, one_id)
+        insert = database.insertData(sql)
+        return insert
+
     def post(self):
         TAG = "Webhook:"
         data = request.json
@@ -112,7 +154,7 @@ class Webhook(Resource):
 
         if ('event' in data):
             if(data["event"] == 'message'):
-                message_db = self.get_message(1)
+                # message_db = self.get_message(1)
                 one_id = data['source']['one_id']
                 dissplay_name = data['source']['display_name']
 
@@ -131,12 +173,23 @@ class Webhook(Resource):
                     "to": data['source']['one_id'],
                     "bot_id": self.onechatbot_id,
                     "type": "text",
-                    "message": message_db[0]['result'][0]['message'],
+                    "message": ['result'][0]['result'][0]['message'],
                     "custom_notification": "ตอบกลับข้อความคุณครับ"
                 }
                 sendmessage = requests.post(
                     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                 self.menu_send(one_id)
+                return module.success()
+
+            elif(data["event"] == 'add_friend'):
+                one_id = data['source']['one_id']
+                dissplay_name = data['source']['display_name']
+                one_email = data['source']['email']
+                if(not self.is_user_exist(one_email)):
+                    add_user = self.add_new_user(
+                        one_email, dissplay_name, one_id)
+                    print(TAG, "add=new_user=", add_user)
+                    self.send_msg(one_id, "ขอบคุณที่เพิ่มเพื่อนค่ะ")
                 return module.success()
 
     def get(self):
