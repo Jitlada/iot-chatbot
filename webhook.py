@@ -17,7 +17,7 @@ class Webhook(Resource):
     onechat_dev_token = "Bearer Bearer A4665996d217651cd9a100f35203b3f6d7f4581c412fa4430a77a6f4851fa74e341b7e45b691a485a88c8f17cf3674e44"
 
     sendmessage_url = "https://chat-api.one.th/message/api/v1/push_message"
-    sendmessage_header = {"Authorization": onechat_dev_token}
+    sendmessage_headers = {"Authorization": onechat_dev_token}
 
     # def send_msg(self, one_id, reply_msg):
     #     TAG = "send_msg:"
@@ -106,7 +106,40 @@ class Webhook(Resource):
         database = Database()
         module = Module()
 
-    # def get(self):
-    #     args = request.args
-    #     get_device = self.get_device(args)
-    #     return get_device
+        dev_uri = "http://localhost:5008/api/v1/webhook"
+        t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
+        t.start()
+
+        if ('event' in data):
+            if(data["event"] == 'message'):
+                message_db = self.get_message(1)
+                one_id = data['source']['one_id']
+                dissplay_name = data['source']['display_name']
+
+                recv_msg = data['message']['text']
+                print(TAG, "recv_msg=", recv_msg)
+
+                one_email = data['source']['email']
+                if(not self.is_user_exist(one_email)):
+                    add_user = self.add_new_user(
+                        one_email, dissplay_name, one_id)
+                    print(TAG, "add=new_user=", add_user)
+                    self.send_msg(one_id, "ยินดีให้บริการค่ะ")
+                    return module.success()
+
+                sendmessage_body = {
+                    "to": data['source']['one_id'],
+                    "bot_id": self.onechatbot_id,
+                    "type": "text",
+                    "message": message_db[0]['result'][0]['message'],
+                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                }
+                sendmessage = requests.post(
+                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                self.menu_send(one_id)
+                return module.success()
+
+    def get(self):
+        args = request.args
+        get_device = self.get_device(args)
+        return get_device
