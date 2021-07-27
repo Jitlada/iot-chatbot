@@ -175,7 +175,7 @@ class Webhook(Resource):
             "to": 804228822528,
             "bot_id": self.onechatbot_id,
             "type": "text",
-            "message": ['result'][0]['result'][0]['message'],
+            "message": "ข้อความใหม่",
             "custom_notification": "ตอบกลับข้อความคุณครับ"
         }
         sendmessage = requests.post(
