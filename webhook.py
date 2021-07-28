@@ -182,15 +182,15 @@ class Webhook(Resource):
         database = Database()
         module = Module()
 
-        # dev_uri = "http://localhost:5008/api/v1/webhook"
-        # t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
-        # t.start()
+        dev_uri = "http://localhost:5008/api/v1/webhook"
+        t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
+        t.start()
 
         # if ('event' in data):
         #     if(data["event"] == 'message'):
         message_db = self.get_message(1)
-        # one_id = data['source']['one_id']
-        one_id = 804228822528
+        one_id = data['source']['one_id']
+        # one_id = 804228822528
         #         dissplay_name = data['source']['display_name']
 
         #         recv_msg = data['message']['text']
@@ -208,8 +208,8 @@ class Webhook(Resource):
               str(message_db[0]['result'][0]['device_name']))
 
         sendmessage_body = {
-            # "to": data['source']['one_id'],
-            "to": 804228822528,
+            "to": data['source']['one_id'],
+            # "to": 804228822528,
             "bot_id": self.onechatbot_id,
             "type": "text",
             "message": message_db[0]['result'][0]['device_name'],
