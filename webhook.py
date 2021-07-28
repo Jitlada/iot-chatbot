@@ -207,38 +207,15 @@ class Webhook(Resource):
         print(TAG, "message: " +
               str(message_db[0]['result'][0]['device_name']))
 
-        # sendmessage_body = {
-        #     # "to": data['source']['one_id'],
-        #     "to": 804228822528,
-        #     "bot_id": self.onechatbot_id,
-        #     "type": "text",
-        #     "message": message_db[0]['result'][0]['device_name'],
-        #     "custom_notification": "ตอบกลับข้อความคุณครับ"
-        # }
-        sendmessage_body = {"to": "804228822528",
-                            "bot_id": "B0e42aac13b8d547ba303b00f8b225aa2",
-                            "message": "เลือกบริการ",
-                            "quick_reply": [
-                                {
-                                    "label": "หลอดไฟ",
-                                    "type": "text",
-                                    "message": "หลอดไฟ",
-                                    "payload": {
-                                        "keyword": "Register",
-                                        "service": "001"
-                                    }
-                                },
-                                {
-                                    "label": "จัดการอุปกรณ์",
-                                    "type": "text",
-                                    "message": "จัดการอุปกรณ์",
-                                    "payload": {
-                                        "keyword": "Register",
-                                        "service": "001"
-                                    }
-                                }
-                            ]
-                            }
+        sendmessage_body = {
+            # "to": data['source']['one_id'],
+            "to": 804228822528,
+            "bot_id": self.onechatbot_id,
+            "type": "text",
+            "message": message_db[0]['result'][0]['device_name'],
+            "custom_notification": "ตอบกลับข้อความคุณครับ"
+        }
+
         sendmessage = requests.post(
             self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
         self.menu_send(one_id)
