@@ -24,7 +24,7 @@ class Webhook(Resource):
 
         payload = {
             "to": one_id,
-            "bot_id": self.beaconbot_id,
+            "bot_id": self.onechatbot_id,
             "type": "text",
             "message": reply_msg,
             "custom_notification": "เปิดอ่านข้อความใหม่จากทางเรา"
@@ -48,24 +48,24 @@ class Webhook(Resource):
                           headers=self.sendmessage_headers, verify=False)
         return r
 
-    # def get_onechat_token(self, auth):
-    #     TAG = "get_onechat_token:"
-    #     module = Module()
-    #     onechat_token = auth.split()
+    def get_onechat_token(self, auth):
+        TAG = "get_onechat_token:"
+        module = Module()
+        onechat_token = auth.split()
 
-    #     print(TAG, "auth=", auth)
+        print(TAG, "auth=", auth)
 
-    #     if(len(onechat_token) < 2):
-    #         return module.wrongAPImsg()
-    #     if(onechat_token[0] != "Bearer"):
-    #         return module.wrongAPImsg()
+        if(len(onechat_token) < 2):
+            return module.wrongAPImsg()
+        if(onechat_token[0] != "Bearer"):
+            return module.wrongAPImsg()
 
-    #     return {
-    #         'type': True,
-    #         'message': "success",
-    #         'error_message': None,
-    #         'result': [{'onechat_token': onechat_token[1]}]
-    #     }, 200
+        return {
+            'type': True,
+            'message': "success",
+            'error_message': None,
+            'result': [{'onechat_token': onechat_token[1]}]
+        }, 200
 
     def menu_send(self, one_id):
         TAG = "menu_send:"
@@ -97,6 +97,29 @@ class Webhook(Resource):
         covid_res = database.getData(cmd)
         # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
         return covid_res
+
+    def is_admin(self, one_id):
+        TAG = "is_admin:"
+        dataabaase = Database()
+        module = Module()
+
+        if(not self.is_oneid_exist(one_id)):
+            return module.userNotFound()
+
+        cmd = """SELECT users.role FROM `users` WHERE users.one_id='%s'""" % (
+            one_id)
+        res = dataabaase.getData(cmd)
+
+        role = res[0]['result'][0]['role']
+
+        print(TAG, "role=", role)
+
+        if(role is None):
+            return False
+        elif(role == "admin"):
+            return True
+        else:
+            return False
 
     def package_forward(self, package, uri):
         TAG = "package_forward:"
@@ -140,6 +163,14 @@ class Webhook(Resource):
         insert = database.insertData(sql)
         return insert
 
+    def get_message(self, key):
+        print("this is KEY" + str(key))
+        database = Database()
+        sql = """SELECT message FROM bot_message WHERE bot_message.message_keys ='%d'""" % (
+            key)
+        message = database.getData(sql)
+        return message
+
     def post(self):
         TAG = "Webhook:"
         data = request.json
@@ -154,9 +185,9 @@ class Webhook(Resource):
 
         # if ('event' in data):
         #     if(data["event"] == 'message'):
-        #         # message_db = self.get_message(1)
-        # one_id = data['source']['one_id']
-        one_id = 6336366888
+        message_db = self.get_message(1)
+        one_id = data['source']['one_id']
+        # one_id = 6336366888
         #         dissplay_name = data['source']['display_name']
 
         #         recv_msg = data['message']['text']
@@ -171,11 +202,11 @@ class Webhook(Resource):
         #             return module.success()
 
         sendmessage_body = {
-            # "to": data['source']['one_id'],
-            "to": 804228822528,
+            "to": data['source']['one_id'],
+            # "to": 804228822528,
             "bot_id": self.onechatbot_id,
             "type": "text",
-            "message": "ข้อความใหม่",
+            "message": message_db[0]['result'][0]['message'],
             "custom_notification": "ตอบกลับข้อความคุณครับ"
         }
         sendmessage = requests.post(
