@@ -71,7 +71,8 @@ class Webhook(Resource):
 
     def menu_send(self, one_id):
         TAG = "menu_send:"
-        web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
+        # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
+        web_vue_url1 = "http://203.151.164.229:8081"
         msg = "ให้ช่วยอะไรดี"
         payload = [
             {
@@ -202,6 +203,8 @@ class Webhook(Resource):
         #             print(TAG, "add=new_user=", add_user)
         #             self.send_msg(one_id, "ยินดีให้บริการค่ะ")
         #             return module.success()
+
+        print(TAG, "message" + str(message_db[0]['result'][0]['device_name']))
 
         sendmessage_body = {
             # "to": data['source']['one_id'],
