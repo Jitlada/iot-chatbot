@@ -14,7 +14,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 class Webhook(Resource):
     onechat_url = "https://chat-api.one.th"
     onechatbot_id = "B0e42aac13b8d547ba303b00f8b225aa2"
-    onechat_dev_token = "Bearer Bearer A4665996d217651cd9a100f35203b3f6d7f4581c412fa4430a77a6f4851fa74e341b7e45b691a485a88c8f17cf3674e44"
+    onechat_dev_token = "Bearer A4665996d217651cd9a100f35203b3f6d7f4581c412fa4430a77a6f4851fa74e341b7e45b691a485a88c8f17cf3674e44"
 
     sendmessage_url = "https://chat-api.one.th/message/api/v1/push_message"
     sendmessage_headers = {"Authorization": onechat_dev_token}
