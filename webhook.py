@@ -206,7 +206,7 @@ class Webhook(Resource):
             "to": 804228822528,
             "bot_id": self.onechatbot_id,
             "type": "text",
-            "message": message_db[0]['result'][0]['message'],
+            "message": message_db[0]['result'][0]['device_name'],
             "custom_notification": "ตอบกลับข้อความคุณครับ"
         }
         sendmessage = requests.post(
