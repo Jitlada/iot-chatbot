@@ -168,6 +168,7 @@ class Webhook(Resource):
         database = Database()
         sql = """SELECT device_name FROM devices"""
         message = database.getData(sql)
+        print("message: " + str(message))
         return message
 
     def post(self):
