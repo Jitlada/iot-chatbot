@@ -186,8 +186,8 @@ class Webhook(Resource):
         # if ('event' in data):
         #     if(data["event"] == 'message'):
         message_db = self.get_message(1)
-        one_id = data['source']['one_id']
-        # one_id = 6336366888
+        # one_id = data['source']['one_id']
+        one_id = 6336366888
         #         dissplay_name = data['source']['display_name']
 
         #         recv_msg = data['message']['text']
@@ -202,8 +202,8 @@ class Webhook(Resource):
         #             return module.success()
 
         sendmessage_body = {
-            "to": data['source']['one_id'],
-            # "to": 804228822528,
+            # "to": data['source']['one_id'],
+            "to": 804228822528,
             "bot_id": self.onechatbot_id,
             "type": "text",
             "message": message_db[0]['result'][0]['message'],
