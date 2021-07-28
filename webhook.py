@@ -46,7 +46,7 @@ class Webhook(Resource):
             "quick_reply": payload
         }
         print(TAG, "payload=", payload)
-        r = requests.post(self.onechat_url1, json=payload,
+        r = requests.post(self.onechat_url1, json=req_body,
                           headers=self.sendmessage_headers, verify=False)
         return r
 
@@ -72,7 +72,7 @@ class Webhook(Resource):
     def menu_send(self, one_id):
         TAG = "menu_send:"
         # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
-        web_vue_url1 = "http://203.151.164.229:8081"
+        # web_vue_url1 = "http://203.151.164.229:8081"
         msg = "ให้ช่วยอะไรดี"
         payload = [
             {
@@ -82,14 +82,14 @@ class Webhook(Resource):
                         "payload": "my_rec"
             }
         ]
-        if(self.is_admin(one_id)):
-            payload.append({
-                "label": "Admin",
-                "type": "link",
-                        "url": web_vue_url1,
-                        "sign": "false",
-                        "onechat_token": "true"
-            })
+        # if(self.is_admin(one_id)):
+        #     payload.append({
+        #         "label": "Admin",
+        #         "type": "link",
+        #                 "url": web_vue_url1,
+        #                 "sign": "false",
+        #                 "onechat_token": "true"
+        #     })
         res = self.send_quick_reply(one_id, msg, payload)
         print(TAG, "res=", res)
 
