@@ -182,9 +182,9 @@ class Webhook(Resource):
         database = Database()
         module = Module()
 
-        dev_uri = "http://localhost:5008/api/v1/webhook"
-        t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
-        t.start()
+        # dev_uri = "http://localhost:5008/api/v1/webhook"
+        # t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
+        # t.start()
 
         # if ('event' in data):
         #     if(data["event"] == 'message'):
