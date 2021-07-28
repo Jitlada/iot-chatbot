@@ -19,6 +19,8 @@ class Webhook(Resource):
     sendmessage_url = "https://chat-api.one.th/message/api/v1/push_message"
     sendmessage_headers = {"Authorization": onechat_dev_token}
 
+    onechat_url1 = onechat_url + '/message/api/v1/push_quickreply'
+
     def send_msg(self, one_id, reply_msg):
         TAG = "send_msg:"
 
@@ -44,7 +46,7 @@ class Webhook(Resource):
             "quick_reply": payload
         }
         print(TAG, "payload=", payload)
-        r = requests.post(self.sendmessage_url, json=payload,
+        r = requests.post(self.onechat_url1, json=payload,
                           headers=self.sendmessage_headers, verify=False)
         return r
 
