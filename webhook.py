@@ -217,24 +217,24 @@ class Webhook(Resource):
 
         if ('event' in data):
             if(data["event"] == 'message'):
-                message_db = self.get_message(1)
+                # message_db = self.get_message(1)
                 one_id = data['source']['one_id']
                 # one_id = 804228822528
-                #         dissplay_name = data['source']['display_name']
+                dissplay_name = data['source']['display_name']
 
-                #         recv_msg = data['message']['text']
-                #         print(TAG, "recv_msg=", recv_msg)
+                recv_msg = data['message']['text']
+                print(TAG, "recv_msg=", recv_msg)
 
-                #         one_email = data['source']['email']
-                #         if(not self.is_user_exist(one_email)):
-                #             add_user = self.add_new_user(
-                #                 one_email, dissplay_name, one_id)
-                #             print(TAG, "add=new_user=", add_user)
-                #             self.send_msg(one_id, "ยินดีให้บริการค่ะ")
-                #             return module.success()
+                one_email = data['source']['email']
+                if(not self.is_user_exist(one_email)):
+                    add_user = self.add_new_user(
+                        one_email, dissplay_name, one_id)
+                    print(TAG, "add=new_user=", add_user)
+                    self.send_msg(one_id, "ยินดีให้บริการค่ะ")
+                    return module.success()
 
-                print(TAG, "message: " +
-                      str(message_db[0]['result'][0]['device_name']))
+                # print(TAG, "message: " +
+                #       str(message_db[0]['result'][0]['device_name']))
 
                 # "to": "804228822528"
                 # "message": message_db[0]['result'][0]['device_name']
@@ -258,16 +258,16 @@ class Webhook(Resource):
                       str(sendmessage_body))
                 return module.success()
 
-        #     elif(data["event"] == 'add_friend'):
-        #         one_id = data['source']['one_id']
-        #         dissplay_name = data['source']['display_name']
-        #         one_email = data['source']['email']
-        #         if(not self.is_user_exist(one_email)):
-        #             add_user = self.add_new_user(
-        #                 one_email, dissplay_name, one_id)
-        #             print(TAG, "add=new_user=", add_user)
-        #             self.send_msg(one_id, "ขอบคุณที่เพิ่มเพื่อนค่ะ")
-        #         return module.success()
+            elif(data["event"] == 'add_friend'):
+                one_id = data['source']['one_id']
+                dissplay_name = data['source']['display_name']
+                one_email = data['source']['email']
+                if(not self.is_user_exist(one_email)):
+                    add_user = self.add_new_user(
+                        one_email, dissplay_name, one_id)
+                    print(TAG, "add=new_user=", add_user)
+                    self.send_msg(one_id, "ขอบคุณที่เพิ่มเพื่อนค่ะ")
+                return module.success()
 
     def get(self):
         args = request.args
