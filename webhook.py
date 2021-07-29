@@ -215,47 +215,48 @@ class Webhook(Resource):
         # t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
         # t.start()
 
-        # if ('event' in data):
-        #     if(data["event"] == 'message'):
-        message_db = self.get_message(1)
-        one_id = data['source']['one_id']
-        # one_id = 804228822528
-        #         dissplay_name = data['source']['display_name']
+        if ('event' in data):
+            if(data["event"] == 'message'):
+                message_db = self.get_message(1)
+                one_id = data['source']['one_id']
+                # one_id = 804228822528
+                #         dissplay_name = data['source']['display_name']
 
-        #         recv_msg = data['message']['text']
-        #         print(TAG, "recv_msg=", recv_msg)
+                #         recv_msg = data['message']['text']
+                #         print(TAG, "recv_msg=", recv_msg)
 
-        #         one_email = data['source']['email']
-        #         if(not self.is_user_exist(one_email)):
-        #             add_user = self.add_new_user(
-        #                 one_email, dissplay_name, one_id)
-        #             print(TAG, "add=new_user=", add_user)
-        #             self.send_msg(one_id, "ยินดีให้บริการค่ะ")
-        #             return module.success()
+                #         one_email = data['source']['email']
+                #         if(not self.is_user_exist(one_email)):
+                #             add_user = self.add_new_user(
+                #                 one_email, dissplay_name, one_id)
+                #             print(TAG, "add=new_user=", add_user)
+                #             self.send_msg(one_id, "ยินดีให้บริการค่ะ")
+                #             return module.success()
 
-        print(TAG, "message: " +
-              str(message_db[0]['result'][0]['device_name']))
+                print(TAG, "message: " +
+                      str(message_db[0]['result'][0]['device_name']))
 
-        # "to": "804228822528"
-        # "message": message_db[0]['result'][0]['device_name']
-        sendmessage_body = {
-            "to": data['source']['one_id'],
-            "bot_id": self.onechatbot_id,
-            "type": "text",
-            "message": "Hello IoT ChatBot Welcome",
-            "custom_notification": "ตอบกลับข้อความคุณครับ"
-        }
+                # "to": "804228822528"
+                # "message": message_db[0]['result'][0]['device_name']
+                sendmessage_body = {
+                    "to": data['source']['one_id'],
+                    "bot_id": self.onechatbot_id,
+                    "type": "text",
+                    "message": "Hello IoT ChatBot Welcome",
+                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                }
 
-        print(TAG, "message: 22222222222222222222222222222222222222222222222")
-        print(type(sendmessage_body))
-        print(str(sendmessage_body) + "Bodyy")
-        sendmessage = requests.post(
-            self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-        self.menu_send(one_id)
-        print("debug onechat response :" + json.dumps(sendmessage.json()))
-        print(TAG, "message: 33333333333333333333333333333333333333333333333333" +
-              str(sendmessage_body))
-        return module.success()
+                print(TAG, "message: 22222222222222222222222222222222222222222222222")
+                print(type(sendmessage_body))
+                print(str(sendmessage_body) + "Bodyy")
+                sendmessage = requests.post(
+                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                self.menu_send(one_id)
+                print("debug onechat response :" +
+                      json.dumps(sendmessage.json()))
+                print(TAG, "message: 33333333333333333333333333333333333333333333333333" +
+                      str(sendmessage_body))
+                return module.success()
 
         #     elif(data["event"] == 'add_friend'):
         #         one_id = data['source']['one_id']
