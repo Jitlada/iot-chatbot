@@ -223,7 +223,8 @@ class Webhook(Resource):
         #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
         # # self.menu_send(one_id)
         # print("debug onechat response :" + json.dumps(sendmessage.json()))
-        print(TAG, "message: 33333333333333333333333333333333333333333333333333" + sendmessage_body)
+        print(TAG, "message: 33333333333333333333333333333333333333333333333333" +
+              str(sendmessage_body))
         return module.success()
 
         #     elif(data["event"] == 'add_friend'):
