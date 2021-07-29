@@ -94,18 +94,18 @@ class Webhook(Resource):
 
     def menu_send(self, one_id):
         TAG = "menu_send:"
-        devices = self.get_device
-        print(type(devices))
-        print(str(devices) + "devices")
-        print("devices : " + devices)
+        # devices = self.get_device(one_id)
+        # print(type(devices))
+        # print(str(devices) + "devices")
+        # print("devices : " + devices)
         # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
         # web_vue_url1 = "http://203.151.164.229:8081"
         msg = "ให้ช่วยอะไรดี"
         payload = [
             {
-                "label": "การเข้าพื้นที่ของคุณ",
+                "label": "จัดการอุปกรณ์",
                 "type": "text",
-                        "message": "ดูการเข้างานของฉัน",
+                        "message": "จัดการอุปกรณ์",
                         "payload": "my_rec"
             }
         ]
