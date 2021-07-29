@@ -218,7 +218,7 @@ class Webhook(Resource):
 
         sendmessage = requests.post(
             self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-        self.menu_send(one_id)
+        # self.menu_send(one_id)
         print("debug onechat response :" + json.dumps(sendmessage.json()))
         return module.success()
 
