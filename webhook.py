@@ -210,7 +210,6 @@ class Webhook(Resource):
               str(message_db[0]['result'][0]['device_name']))
 
         sendmessage_body = {
-            # "to": data['source']['one_id'],
             "to": 804228822528,
             "bot_id": self.onechatbot_id,
             "type": "text",
@@ -219,6 +218,8 @@ class Webhook(Resource):
         }
 
         print(TAG, "message: 22222222222222222222222222222222222222222222222")
+        print(type(sendmessage_body))
+        print(str(sendmessage_body) + "Bodyy")
         sendmessage = requests.post(
             self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
         # self.menu_send(one_id)
