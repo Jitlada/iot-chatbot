@@ -178,7 +178,7 @@ class Webhook(Resource):
         TAG = "Webhook:"
         data = request.json
         print(TAG, "data=", data)
-        print(TAG, request.headers)
+        print(TAG, "headers=", request.headers)
         database = Database()
         module = Module()
 
