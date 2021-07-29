@@ -182,6 +182,8 @@ class Webhook(Resource):
         database = Database()
         module = Module()
 
+        print(TAG, "message: 111111111111111111111111111111111111111111111111111111111111")
+
         # dev_uri = "http://localhost:5008/api/v1/webhook"
         # t = threading.Thread(target=self.package_forward, args=(data, dev_uri))
         # t.start()
@@ -216,10 +218,12 @@ class Webhook(Resource):
             "custom_notification": "ตอบกลับข้อความคุณครับ"
         }
 
+        print(TAG, "message: 22222222222222222222222222222222222222222222222")
         sendmessage = requests.post(
             self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
         # self.menu_send(one_id)
         print("debug onechat response :" + json.dumps(sendmessage.json()))
+        print(TAG, "message: 33333333333333333333333333333333333333333333333333")
         return module.success()
 
         #     elif(data["event"] == 'add_friend'):
