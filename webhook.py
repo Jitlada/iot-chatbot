@@ -94,6 +94,10 @@ class Webhook(Resource):
 
     def menu_send(self, one_id):
         TAG = "menu_send:"
+        devices = self.get_device
+        print(type(devices))
+        print(str(devices) + "devices")
+        print("devices : " + devices)
         # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
         # web_vue_url1 = "http://203.151.164.229:8081"
         msg = "ให้ช่วยอะไรดี"
@@ -238,7 +242,7 @@ class Webhook(Resource):
             "to": data['source']['one_id'],
             "bot_id": self.onechatbot_id,
             "type": "text",
-            "message": "เลือกบริการ",
+            "message": "Hello IoT ChatBot Welcome",
             "custom_notification": "ตอบกลับข้อความคุณครับ"
         }
 
