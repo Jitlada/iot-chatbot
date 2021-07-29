@@ -221,7 +221,7 @@ class Webhook(Resource):
         print(TAG, "message: 22222222222222222222222222222222222222222222222")
         sendmessage = requests.post(
             self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-        self.menu_send(one_id)
+        # self.menu_send(one_id)
         print("debug onechat response :" + json.dumps(sendmessage.json()))
         print(TAG, "message: 33333333333333333333333333333333333333333333333333" +
               str(sendmessage_body))
