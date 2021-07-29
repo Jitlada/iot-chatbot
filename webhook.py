@@ -210,7 +210,7 @@ class Webhook(Resource):
               str(message_db[0]['result'][0]['device_name']))
 
         sendmessage_body = {
-            "to": 804228822528,
+            "to": "804228822528",
             "bot_id": self.onechatbot_id,
             "type": "text",
             "message": message_db[0]['result'][0]['device_name'],
