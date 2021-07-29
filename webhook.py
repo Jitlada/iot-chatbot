@@ -46,7 +46,7 @@ class Webhook(Resource):
             "quick_reply": payload
         }
         print(TAG, "payload=", payload)
-        r = requests.post(self.onechat_url1, json=req_body,
+        r = requests.post(self.onechat_url1, data=req_body,
                           headers=self.sendmessage_headers, verify=False)
         return r
 
