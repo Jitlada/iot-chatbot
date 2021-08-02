@@ -97,7 +97,7 @@ class Webhook(Resource):
         database = Database()
         cmd = """SELECT devices.device_name FROM `devices` """
         covid_res = database.getData(cmd)
-        print(covid_res + "covid_ressssssss")
+        print(str(covid_res) + "covid_ressssssss")
         print(type(covid_res) + "covid_res typeeeeeeeeee")
         # devices = self.get_device(one_id)
         # print(type(devices) + "typeeeeeeeeee")
