@@ -216,6 +216,26 @@ class Webhook(Resource):
         # t.start()
 
         if ('event' in data):
+            if(data["event"] == 'greeting'):
+                sendmessage_body = {
+                    "to": data['source']['one_id'],
+                    "bot_id": self.onechatbot_id,
+                    "type": "text",
+                    "message": "Hello IoT ChatBot Welcome",
+                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                }
+
+                print(TAG, "message: 22222222222222222222222222222222222222222222222")
+                print(type(sendmessage_body))
+                print(str(sendmessage_body) + "Bodyy")
+                sendmessage = requests.post(
+                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                print("debug onechat response :" +
+                      json.dumps(sendmessage.json()))
+                print(TAG, "message: 33333333333333333333333333333333333333333333333333" +
+                      str(sendmessage_body))
+                return module.success()
+
             if(data["event"] == 'message'):
                 # message_db = self.get_message(1)
                 one_id = data['source']['one_id']
@@ -238,24 +258,8 @@ class Webhook(Resource):
 
                 # "to": "804228822528"
                 # "message": message_db[0]['result'][0]['device_name']
-                sendmessage_body = {
-                    "to": data['source']['one_id'],
-                    "bot_id": self.onechatbot_id,
-                    "type": "text",
-                    "message": "Hello IoT ChatBot Welcome",
-                    "custom_notification": "ตอบกลับข้อความคุณครับ"
-                }
 
-                print(TAG, "message: 22222222222222222222222222222222222222222222222")
-                print(type(sendmessage_body))
-                print(str(sendmessage_body) + "Bodyy")
-                sendmessage = requests.post(
-                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                 self.menu_send(one_id)
-                print("debug onechat response :" +
-                      json.dumps(sendmessage.json()))
-                print(TAG, "message: 33333333333333333333333333333333333333333333333333" +
-                      str(sendmessage_body))
                 return module.success()
 
             elif(data["event"] == 'add_friend'):
