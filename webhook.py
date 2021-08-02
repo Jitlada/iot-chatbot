@@ -106,6 +106,7 @@ class Webhook(Resource):
         # print(str(devices[0]['result'][0]['device_name']))
 
         # print("devices : " + devices)
+        payload = []
         for item in devices[0]['result']:
 
             # print(str(item) + "item in devicesssssssssssss")
@@ -114,7 +115,6 @@ class Webhook(Resource):
             # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
             # web_vue_url1 = "http://203.151.164.229:8081"
             msg = "ให้ช่วยอะไรดี"
-            payload = []
             payload.append(
                 {
                     "label": item['device_name'],
@@ -131,12 +131,13 @@ class Webhook(Resource):
             #                 "sign": "false",
             #                 "onechat_token": "true"
             #     })
-            payload.append({
-                "label": "จัดการอุปกรณ์",
-                "type": "text",
-                "message": "จัดการอุปกรณ์",
-                "payload": "my_devices"
-            })
+
+        payload.append({
+            "label": "จัดการอุปกรณ์",
+            "type": "text",
+            "message": "จัดการอุปกรณ์",
+            "payload": "my_devices"
+        })
         res = self.send_quick_reply(one_id, msg, payload)
         print(TAG, "res=", res)
 
