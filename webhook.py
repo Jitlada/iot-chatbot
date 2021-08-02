@@ -114,14 +114,15 @@ class Webhook(Resource):
             # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
             # web_vue_url1 = "http://203.151.164.229:8081"
             msg = "ให้ช่วยอะไรดี"
-            payload = [
+            payload = []
+            payload.append(
                 {
                     "label": item['device_name'],
                     "type": "text",
                     "message": item['device_name'],
                     "payload": "my_devices"
                 }
-            ]
+            )
             # if(self.is_admin(one_id)):
             #     payload.append({
             #         "label": "Admin",
@@ -134,7 +135,7 @@ class Webhook(Resource):
                 "label": "จัดการอุปกรณ์",
                 "type": "text",
                 "message": "จัดการอุปกรณ์",
-                "payload": "my_rec"
+                "payload": "my_devices"
             })
         res = self.send_quick_reply(one_id, msg, payload)
         print(TAG, "res=", res)
