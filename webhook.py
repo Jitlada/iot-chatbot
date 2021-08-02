@@ -105,7 +105,7 @@ class Webhook(Resource):
         print(str(devices[0]['result'][0]['device_name']))
         # print("devices : " + devices)
         for item in devices[0]['result']:
-            print(item + "item in devicesssssssssssss")
+            print(str(item) + "item in devicesssssssssssss")
         # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
         # web_vue_url1 = "http://203.151.164.229:8081"
         msg = "ให้ช่วยอะไรดี"
