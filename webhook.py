@@ -101,21 +101,25 @@ class Webhook(Resource):
         # print(type(covid_res) + "covid_res typeeeeeeeeee")
         devices = self.get_device(one_id)
         # print(type(devices) + "typeeeeeeeeee")
-        print(str(devices) + "devices")
-        print(str(devices[0]['result'][0]['device_name']))
+
+        # print(str(devices) + "devices")
+        # print(str(devices[0]['result'][0]['device_name']))
+
         # print("devices : " + devices)
         for item in devices[0]['result']:
-            print(str(item) + "item in devicesssssssssssss")
-            print(item['device_name'])
+
+            # print(str(item) + "item in devicesssssssssssss")
+            # print(item['device_name'])
+
             # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
             # web_vue_url1 = "http://203.151.164.229:8081"
             msg = "ให้ช่วยอะไรดี"
             payload = [
                 {
-                    "label": "จัดการอุปกรณ์",
+                    "label": item['device_name'],
                     "type": "text",
-                    "message": "จัดการอุปกรณ์",
-                    "payload": "my_rec"
+                    "message": item['device_name'],
+                    "payload": "my_devices"
                 }
             ]
             # if(self.is_admin(one_id)):
