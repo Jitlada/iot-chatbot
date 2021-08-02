@@ -106,25 +106,32 @@ class Webhook(Resource):
         # print("devices : " + devices)
         for item in devices[0]['result']:
             print(str(item) + "item in devicesssssssssssss")
-        # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
-        # web_vue_url1 = "http://203.151.164.229:8081"
-        msg = "ให้ช่วยอะไรดี"
-        payload = [
-            {
+            print(item['device_name'])
+            # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
+            # web_vue_url1 = "http://203.151.164.229:8081"
+            msg = "ให้ช่วยอะไรดี"
+            payload = [
+                {
+                    "label": "จัดการอุปกรณ์",
+                    "type": "text",
+                    "message": "จัดการอุปกรณ์",
+                    "payload": "my_rec"
+                }
+            ]
+            # if(self.is_admin(one_id)):
+            #     payload.append({
+            #         "label": "Admin",
+            #         "type": "link",
+            #                 "url": web_vue_url1,
+            #                 "sign": "false",
+            #                 "onechat_token": "true"
+            #     })
+            payload.append({
                 "label": "จัดการอุปกรณ์",
                 "type": "text",
-                        "message": "จัดการอุปกรณ์",
-                        "payload": "my_rec"
-            }
-        ]
-        # if(self.is_admin(one_id)):
-        #     payload.append({
-        #         "label": "Admin",
-        #         "type": "link",
-        #                 "url": web_vue_url1,
-        #                 "sign": "false",
-        #                 "onechat_token": "true"
-        #     })
+                "message": "จัดการอุปกรณ์",
+                "payload": "my_rec"
+            })
         res = self.send_quick_reply(one_id, msg, payload)
         print(TAG, "res=", res)
 
