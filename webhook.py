@@ -102,6 +102,7 @@ class Webhook(Resource):
         devices = self.get_device(one_id)
         # print(type(devices) + "typeeeeeeeeee")
         print(str(devices) + "devices")
+        print(str(devices[0]['result'][0]['device_name']))
         # print("devices : " + devices)
         # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
         # web_vue_url1 = "http://203.151.164.229:8081"
