@@ -37,7 +37,8 @@ class Webhook(Resource):
                           headers=self.sendmessage_headers, verify=False)
         return r
 
-    def send_quick_reply(self, one_id, msg, payload):
+    # def send_quick_reply(self, one_id, msg, payload):
+    def send_quick_reply(self, one_id, received_msg):
         TAG = "send_quick_reply:"
         # "to": "804228822528",
         # "bot_id": "B0e42aac13b8d547ba303b00f8b225aa2",
@@ -62,6 +63,27 @@ class Webhook(Resource):
         #         }
         #     }
         # ]
+
+        recv_msg = received_msg
+        devices = self.get_device(one_id)
+        payload = []
+        for item in devices[0]['result']:
+            payload.append(
+                {
+                    "label": item['device_name'],
+                    "type": "text",
+                    "message": item['device_name'],
+                    "payload": "my_devices"
+                }
+            )
+
+        payload.append({
+            "label": "จัดการอุปกรณ์",
+            "type": "text",
+            "message": "จัดการอุปกรณ์",
+            "payload": "my_devices"
+        })
+
         req_body = {
             "to": one_id,
             "bot_id": self.onechatbot_id,
@@ -69,6 +91,7 @@ class Webhook(Resource):
             "quick_reply": payload
         }
         print(TAG, "payload=", payload)
+        print(TAG, "received_msg=", received_msg)
         r = requests.post(self.onechat_url1, json=req_body,
                           headers=self.sendmessage_headers, verify=False)
         return r
@@ -92,53 +115,58 @@ class Webhook(Resource):
             'result': [{'onechat_token': onechat_token[1]}]
         }, 200
 
-    def menu_send(self, one_id):
+    def menu_send(self, one_id, recv_msg):
         TAG = "menu_send:"
         # database = Database()
         # cmd = """SELECT devices.device_name FROM `devices` """
         # covid_res = database.getData(cmd)
         # print(str(covid_res) + "covid_ressssssss")
         # print(type(covid_res) + "covid_res typeeeeeeeeee")
-        devices = self.get_device(one_id)
+
+        # devices = self.get_device(one_id)
+
         # print(type(devices) + "typeeeeeeeeee")
 
         # print(str(devices) + "devices")
         # print(str(devices[0]['result'][0]['device_name']))
 
-        # print("devices : " + devices)
-        payload = []
-        for item in devices[0]['result']:
+        received_msg = recv_msg
 
-            # print(str(item) + "item in devicesssssssssssss")
-            # print(item['device_name'])
+        # payload = []
+        # for item in devices[0]['result']:
 
-            # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
-            # web_vue_url1 = "http://203.151.164.229:8081"
-            msg = "ให้ช่วยอะไรดี"
-            payload.append(
-                {
-                    "label": item['device_name'],
-                    "type": "text",
-                    "message": item['device_name'],
-                    "payload": "my_devices"
-                }
-            )
-            # if(self.is_admin(one_id)):
-            #     payload.append({
-            #         "label": "Admin",
-            #         "type": "link",
-            #                 "url": web_vue_url1,
-            #                 "sign": "false",
-            #                 "onechat_token": "true"
-            #     })
+        #     # print(str(item) + "item in devicesssssssssssss")
+        #     # print(item['device_name'])
 
-        payload.append({
-            "label": "จัดการอุปกรณ์",
-            "type": "text",
-            "message": "จัดการอุปกรณ์",
-            "payload": "my_devices"
-        })
-        res = self.send_quick_reply(one_id, msg, payload)
+        #     # web_vue_url1 = "http://onesmartaccess.ddns.net:8081"
+        #     # web_vue_url1 = "http://203.151.164.229:8081"
+        #     # msg = "ให้ช่วยอะไรดี"
+        #     payload.append(
+        #         {
+        #             "label": item['device_name'],
+        #             "type": "text",
+        #             "message": item['device_name'],
+        #             "payload": "my_devices"
+        #         }
+        #     )
+        #     # if(self.is_admin(one_id)):
+        #     #     payload.append({
+        #     #         "label": "Admin",
+        #     #         "type": "link",
+        #     #                 "url": web_vue_url1,
+        #     #                 "sign": "false",
+        #     #                 "onechat_token": "true"
+        #     #     })
+
+        # payload.append({
+        #     "label": "จัดการอุปกรณ์",
+        #     "type": "text",
+        #     "message": "จัดการอุปกรณ์",
+        #     "payload": "my_devices"
+        # })
+
+        # res = self.send_quick_reply(one_id, received_msg, payload)
+        res = self.send_quick_reply(one_id, received_msg)
         print(TAG, "res=", res)
 
     def get_device(self, one_id):
@@ -261,18 +289,19 @@ class Webhook(Resource):
                 # message_db = self.get_message(1)
                 one_id = data['source']['one_id']
                 # one_id = 804228822528
-                dissplay_name = data['source']['display_name']
 
                 recv_msg = data['message']['text']
                 print(TAG, "recv_msg=", recv_msg)
 
-                one_email = data['source']['email']
-                if(not self.is_user_exist(one_email)):
-                    add_user = self.add_new_user(
-                        one_email, dissplay_name, one_id)
-                    print(TAG, "add=new_user=", add_user)
-                    self.send_msg(one_id, "ยินดีให้บริการค่ะ")
-                    return module.success()
+                # dissplay_name = data['source']['display_name']
+
+                # one_email = data['source']['email']
+                # if(not self.is_user_exist(one_email)):
+                #     add_user = self.add_new_user(
+                #         one_email, dissplay_name, one_id)
+                #     print(TAG, "add=new_user=", add_user)
+                #     self.send_msg(one_id, "ยินดีให้บริการค่ะ")
+                #     return module.success()
 
                 # print(TAG, "message: " +
                 #       str(message_db[0]['result'][0]['device_name']))
@@ -280,7 +309,7 @@ class Webhook(Resource):
                 # "to": "804228822528"
                 # "message": message_db[0]['result'][0]['device_name']
 
-                self.menu_send(one_id)
+                self.menu_send(one_id, recv_msg)
                 return module.success()
 
             elif(data["event"] == 'add_friend'):
