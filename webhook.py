@@ -296,6 +296,7 @@ class Webhook(Resource):
                 dissplay_name = data['source']['display_name']
 
                 one_email = data['source']['email']
+                print(TAG, "one_email=", one_email)
                 if(not self.is_user_exist(one_email)):
                     add_user = self.add_new_user(
                         one_email, dissplay_name, one_id)
