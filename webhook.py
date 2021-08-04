@@ -213,6 +213,7 @@ class Webhook(Resource):
         TAG = "is_user_exist:"
         cmd = """SELECT users.one_email FROM users WHERE users.one_email='%s' """ % (
             one_email)
+        print(TAG, "cmd=", cmd)
         database = Database()
         res = database.getData(cmd)
         print(TAG, "res=", res)
