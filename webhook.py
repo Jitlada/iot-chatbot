@@ -243,6 +243,29 @@ class Webhook(Resource):
         insert = database.insertData(sql)
         return insert
 
+    def check_permission(self, one_id):
+        TAG = "check_permission:"
+        database = Database()
+        cmd = """SELECT * FROM `permissions` WHERE permissions.one_id='%s' """ % (
+            one_id)
+        # SELECT devices.device_id, devices.device_name,devices.secret_key  FROM `permissions`
+        # LEFT JOIN devices ON permissions.device_id=devices.device_id
+        # WHERE permissions.one_id=6271993808
+        covid_res = database.getData(cmd)
+        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
+        return covid_res
+
+    def get_devices_user(self, one_id):
+        TAG = "get_devices_user:"
+        database = Database()
+        cmd = """SELECT devices.device_id, devices.device_name,devices.secret_key  FROM `permissions` 
+        LEFT JOIN devices ON permissions.device_id=devices.device_id
+        WHERE permissions.one_id='%s' """ % (one_id)
+        print(TAG, "cmd of get device all" + cmd)
+        devices_of_user = database.getData(cmd)
+        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
+        return devices_of_user
+
     def get_message(self, key):
         print("this is KEY" + str(key))
         database = Database()
@@ -325,7 +348,12 @@ class Webhook(Resource):
                     self.send_msg(one_id, "ขอบคุณที่เพิ่มเพื่อนค่ะ")
                 return module.success()
 
+    # def get(self):
+    #     args = request.args
+    #     get_device = self.get_device(args)
+    #     return get_device
+
     def get(self):
         args = request.args
-        get_device = self.get_device(args)
-        return get_device
+        get_device_all = self.get_devices_user(args)
+        return get_device_all
