@@ -64,38 +64,72 @@ class Webhook(Resource):
         #     }
         # ]
 
-        recv_msg = received_msg
-        # devices = self.get_device(one_id)
-        devices = self.get_devices_user(one_id)
-        payload = []
-        for item in devices[0]['result']:
-            payload.append(
+        if(received_msg != 'จัดการอุปกรณ์'):
+            # recv_msg = received_msg
+            # devices = self.get_device(one_id)
+            devices = self.get_devices_user(one_id)
+            payload = []
+            for item in devices[0]['result']:
+                payload.append(
+                    {
+                        "label": item['device_name'],
+                        "type": "text",
+                        "message": item['device_name'],
+                        "payload": "my_devices"
+                    }
+                )
+
+            payload.append({
+                "label": "จัดการอุปกรณ์",
+                "type": "text",
+                "message": "จัดการอุปกรณ์",
+                "payload": "my_devices"
+            })
+
+            req_body = {
+                "to": one_id,
+                "bot_id": self.onechatbot_id,
+                "message": "เลือกบริการ",
+                "quick_reply": payload
+            }
+            print(TAG, "payload=", payload)
+            print(TAG, "received_msg=", received_msg)
+            r = requests.post(self.onechat_url1, json=req_body,
+                              headers=self.sendmessage_headers, verify=False)
+            return r
+
+        else:
+            payload = [
                 {
-                    "label": item['device_name'],
+                    "label": "อุปกรณทั้งหมด",
                     "type": "text",
-                    "message": item['device_name'],
-                    "payload": "my_devices"
+                    "message": "อุปกรณทั้งหมด",
+                    "payload": "manage_my_device"
+                },
+                {
+                    "label": "เพิ่มอุปกรณ์",
+                    "type": "text",
+                    "message": "เพิ่มอุปกรณ์",
+                    "payload": "manage_my_device"
+                },
+                {
+                    "label": "ลบอุปกรณ์",
+                    "type": "text",
+                    "message": "ลบอุปกรณ์",
+                    "payload": "manage_my_device"
                 }
-            )
-
-        payload.append({
-            "label": "จัดการอุปกรณ์",
-            "type": "text",
-            "message": "จัดการอุปกรณ์",
-            "payload": "my_devices"
-        })
-
-        req_body = {
-            "to": one_id,
-            "bot_id": self.onechatbot_id,
-            "message": "เลือกบริการ",
-            "quick_reply": payload
-        }
-        print(TAG, "payload=", payload)
-        print(TAG, "received_msg=", received_msg)
-        r = requests.post(self.onechat_url1, json=req_body,
-                          headers=self.sendmessage_headers, verify=False)
-        return r
+            ]
+            req_body = {
+                "to": one_id,
+                "bot_id": self.onechatbot_id,
+                "message": "เลือกจัดการอุปกรณ์",
+                "quick_reply": payload
+            }
+            print(TAG, "payload=", payload)
+            print(TAG, "received_msg=", received_msg)
+            r = requests.post(self.onechat_url1, json=req_body,
+                              headers=self.sendmessage_headers, verify=False)
+            return r
 
     def get_onechat_token(self, auth):
         TAG = "get_onechat_token:"
@@ -131,7 +165,7 @@ class Webhook(Resource):
         # print(str(devices) + "devices")
         # print(str(devices[0]['result'][0]['device_name']))
 
-        received_msg = recv_msg
+        # received_msg = recv_msg
 
         # payload = []
         # for item in devices[0]['result']:
@@ -167,7 +201,8 @@ class Webhook(Resource):
         # })
 
         # res = self.send_quick_reply(one_id, received_msg, payload)
-        res = self.send_quick_reply(one_id, received_msg)
+
+        res = self.send_quick_reply(one_id, recv_msg)
         print(TAG, "res=", res)
 
     def get_device(self, one_id):
