@@ -354,6 +354,7 @@ class Webhook(Resource):
     #     return get_device
 
     def get(self):
-        args = request.args
-        get_device_all = self.get_devices_user(args)
+        # args = request.args
+        one_id = request.args['one_id']
+        get_device_all = self.get_devices_user(one_id)
         return get_device_all
