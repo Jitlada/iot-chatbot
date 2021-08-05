@@ -109,7 +109,7 @@ class Webhook(Resource):
                     "to": one_id,
                     "bot_id": self.onechatbot_id,
                     "type": "text",
-                    "message": "gg",
+                    "message": str(return_device),
                     "custom_notification": "ตอบกลับข้อความคุณครับ"
                 }
                 sendmessage = requests.post(
