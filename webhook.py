@@ -99,16 +99,26 @@ class Webhook(Resource):
             return r
 
         else:
-            if(received_msg == 'อุปกรณทั้งหมด'):
+            if(received_msg == 'อุปกรณ์ทั้งหมด'):
                 all_devices = self.get_devices_user(one_id)
-                return all_devices
+                print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " + str(all_devices))
+                sendmessage_body = {
+                    "to": one_id,
+                    "bot_id": self.onechatbot_id,
+                    "type": "text",
+                    "message": "อุปกรณ์ทั้งหมด",
+                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                }
+                sendmessage = requests.post(
+                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                return sendmessage
 
             else:
                 payload = [
                     {
-                        "label": "อุปกรณทั้งหมด",
+                        "label": "อุปกรณ์ทั้งหมด",
                         "type": "text",
-                        "message": "อุปกรณทั้งหมด",
+                        "message": "อุปกรณ์ทั้งหมด",
                         "payload": "manage_my_device"
                     },
                     {
