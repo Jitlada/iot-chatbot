@@ -65,7 +65,8 @@ class Webhook(Resource):
         # ]
 
         recv_msg = received_msg
-        devices = self.get_device(one_id)
+        # devices = self.get_device(one_id)
+        devices = self.get_devices_user(one_id)
         payload = []
         for item in devices[0]['result']:
             payload.append(
@@ -246,14 +247,14 @@ class Webhook(Resource):
     def check_permission(self, one_id):
         TAG = "check_permission:"
         database = Database()
-        cmd = """SELECT * FROM `permissions` WHERE permissions.one_id='%s' """ % (
+        cmd = """SELECT permissions.one_id FROM `permissions` WHERE permissions.one_id='%s' """ % (
             one_id)
-        # SELECT devices.device_id, devices.device_name,devices.secret_key  FROM `permissions`
-        # LEFT JOIN devices ON permissions.device_id=devices.device_id
-        # WHERE permissions.one_id=6271993808
-        covid_res = database.getData(cmd)
-        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
-        return covid_res
+        res = database.getData(cmd)
+        print(TAG, "res check_permission=", res)
+        if(res[0]['len'] > 0):
+            return True
+        else:
+            return False
 
     def get_devices_user(self, one_id):
         TAG = "get_devices_user:"
@@ -334,8 +335,12 @@ class Webhook(Resource):
                 # "to": "804228822528"
                 # "message": message_db[0]['result'][0]['device_name']
 
-                self.menu_send(one_id, recv_msg)
-                return module.success()
+                # self.menu_send(one_id, recv_msg)
+                # return module.success()
+                if(not self.check_permission(one_id)):
+                    print(TAG, "check permission before send menu")
+                    self.menu_send(one_id, recv_msg)
+                    return module.success()
 
             elif(data["event"] == 'add_friend'):
                 one_id = data['source']['one_id']
@@ -353,8 +358,8 @@ class Webhook(Resource):
     #     get_device = self.get_device(args)
     #     return get_device
 
-    def get(self):
-        # args = request.args
-        one_id = request.args['one_id']
-        get_device_all = self.get_devices_user(one_id)
-        return get_device_all
+    # def get(self):
+    #     # args = request.args
+    #     one_id = request.args['one_id']
+    #     get_device_all = self.get_devices_user(one_id)
+    #     return get_device_all
