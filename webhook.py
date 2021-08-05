@@ -337,7 +337,7 @@ class Webhook(Resource):
 
                 # self.menu_send(one_id, recv_msg)
                 # return module.success()
-                if(not self.check_permission(one_id)):
+                if(self.check_permission(one_id)):
                     print(TAG, "check permission before send menu")
                     self.menu_send(one_id, recv_msg)
                     return module.success()
