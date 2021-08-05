@@ -102,11 +102,14 @@ class Webhook(Resource):
             if(received_msg == 'อุปกรณ์ทั้งหมด'):
                 all_devices = self.get_devices_user(one_id)
                 print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " + str(all_devices))
+                return_device = all_devices[0]['result']
+                print("return_device deviceeeeeeeeeeeeeeeeeeeeeeee : " +
+                      str(return_device))
                 sendmessage_body = {
                     "to": one_id,
                     "bot_id": self.onechatbot_id,
                     "type": "text",
-                    "message": str(all_devices["result"]),
+                    "message": "gg",
                     "custom_notification": "ตอบกลับข้อความคุณครับ"
                 }
                 sendmessage = requests.post(
