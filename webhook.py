@@ -98,53 +98,52 @@ class Webhook(Resource):
                               headers=self.sendmessage_headers, verify=False)
             return r
 
+        if(received_msg == 'อุปกรณ์ทั้งหมด'):
+            all_devices = self.get_devices_user(one_id)
+            print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " + str(all_devices))
+            sendmessage_body = {
+                "to": one_id,
+                "bot_id": self.onechatbot_id,
+                "type": "text",
+                "message": "อุปกรณ์ทั้งหมด",
+                "custom_notification": "ตอบกลับข้อความคุณครับ"
+            }
+            sendmessage = requests.post(
+                self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+            return sendmessage
+
         else:
-            if(received_msg == 'อุปกรณ์ทั้งหมด'):
-                all_devices = self.get_devices_user(one_id)
-                print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " + str(all_devices))
-                sendmessage_body = {
-                    "to": one_id,
-                    "bot_id": self.onechatbot_id,
+            payload = [
+                {
+                    "label": "อุปกรณ์ทั้งหมด",
                     "type": "text",
                     "message": "อุปกรณ์ทั้งหมด",
-                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                    "payload": "manage_my_device"
+                },
+                {
+                    "label": "เพิ่มอุปกรณ์",
+                    "type": "text",
+                    "message": "เพิ่มอุปกรณ์",
+                    "payload": "manage_my_device"
+                },
+                {
+                    "label": "ลบอุปกรณ์",
+                    "type": "text",
+                    "message": "ลบอุปกรณ์",
+                    "payload": "manage_my_device"
                 }
-                sendmessage = requests.post(
-                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-                return sendmessage
-
-            else:
-                payload = [
-                    {
-                        "label": "อุปกรณ์ทั้งหมด",
-                        "type": "text",
-                        "message": "อุปกรณ์ทั้งหมด",
-                        "payload": "manage_my_device"
-                    },
-                    {
-                        "label": "เพิ่มอุปกรณ์",
-                        "type": "text",
-                        "message": "เพิ่มอุปกรณ์",
-                        "payload": "manage_my_device"
-                    },
-                    {
-                        "label": "ลบอุปกรณ์",
-                        "type": "text",
-                        "message": "ลบอุปกรณ์",
-                        "payload": "manage_my_device"
-                    }
-                ]
-                req_body = {
-                    "to": one_id,
-                    "bot_id": self.onechatbot_id,
-                    "message": "เลือกจัดการอุปกรณ์",
-                    "quick_reply": payload
-                }
-                print(TAG, "payload=", payload)
-                print(TAG, "received_msg=", received_msg)
-                r = requests.post(self.onechat_url1, json=req_body,
-                                  headers=self.sendmessage_headers, verify=False)
-                return r
+            ]
+            req_body = {
+                "to": one_id,
+                "bot_id": self.onechatbot_id,
+                "message": "เลือกจัดการอุปกรณ์",
+                "quick_reply": payload
+            }
+            print(TAG, "payload=", payload)
+            print(TAG, "received_msg=", received_msg)
+            r = requests.post(self.onechat_url1, json=req_body,
+                              headers=self.sendmessage_headers, verify=False)
+            return r
 
     def get_onechat_token(self, auth):
         TAG = "get_onechat_token:"
