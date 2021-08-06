@@ -7,6 +7,8 @@ from datetime import datetime
 import urllib3
 import json
 import threading
+import string
+import random
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -64,7 +66,7 @@ class Webhook(Resource):
         #     }
         # ]
 
-        if((received_msg != 'จัดการอุปกรณ์') and (received_msg != 'อุปกรณ์ทั้งหมด')):
+        if((received_msg != 'จัดการอุปกรณ์') and (received_msg != 'อุปกรณ์ทั้งหมด') and (received_msg != 'เพิ่มอุปกรณ์') and (received_msg != 'ลบอุปกรณ์')):
             # recv_msg = received_msg
             # devices = self.get_device(one_id)
             devices = self.get_devices_user(one_id)
@@ -116,6 +118,37 @@ class Webhook(Resource):
                     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                 return sendmessage
 
+            elif (received_msg == 'เพิ่มอุปกรณ์'):
+                letters = string.ascii_letters
+                device_id = ''.join(random.choice(letters) for i in range(10))
+                secret_key = ''.join(random.choice(letters) for i in range(30))
+                print(
+                    device_id + "device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
+                print(
+                    secret_key + "secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+                sendmessage_body = {
+                    "to": one_id,
+                    "bot_id": self.onechatbot_id,
+                    "type": "text",
+                    "message": "เพิ่มอุปกรณ์",
+                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                }
+                sendmessage = requests.post(
+                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                return sendmessage
+
+            elif (received_msg == 'ลบอุปกรณ์'):
+                sendmessage_body = {
+                    "to": one_id,
+                    "bot_id": self.onechatbot_id,
+                    "type": "text",
+                    "message": "ลบอุปกรณ์",
+                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                }
+                sendmessage = requests.post(
+                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                return sendmessage
+
             else:
                 payload = [
                     {
@@ -148,6 +181,15 @@ class Webhook(Resource):
                 r = requests.post(self.onechat_url1, json=req_body,
                                   headers=self.sendmessage_headers, verify=False)
                 return r
+
+    # def add_new_device(self, email, name, one_id):
+    #     TAG = "add_new_user:"
+    #     database = Database()
+    #     print(TAG, "add user to our system")
+    #     sql = """INSERT INTO `users` (`one_email`, `name`, `one_id`) VALUES ('%s', '%s', '%s')""" \
+    #           % (email, name, one_id)
+    #     insert = database.insertData(sql)
+    #     return insert
 
     def get_onechat_token(self, auth):
         TAG = "get_onechat_token:"
