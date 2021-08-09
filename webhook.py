@@ -138,16 +138,45 @@ class Webhook(Resource):
                 return sendmessage
 
             elif (received_msg == 'ลบอุปกรณ์'):
-                sendmessage_body = {
+                devices = self.get_devices_user(one_id)
+                payload = []
+                for item in devices[0]['result']:
+                    payload.append(
+                        {
+                            "label": item['device_name'],
+                            "type": "text",
+                            "message": item['device_name'],
+                            "payload": "my_devices"
+                        }
+                    )
+
+                payload.append({
+                    "label": "ยกเลิก",
+                    "type": "text",
+                    "message": "ยกเลิก",
+                    "payload": "my_devices"
+                })
+                req_body = {
                     "to": one_id,
                     "bot_id": self.onechatbot_id,
-                    "type": "text",
                     "message": "กรุณาเลือกอุปกรณ์ที่ต้องการลบ",
-                    "custom_notification": "ตอบกลับข้อความคุณครับ"
+                    "quick_reply": payload
                 }
-                sendmessage = requests.post(
-                    self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-                return sendmessage
+                print(TAG, "payload=", payload)
+                print(TAG, "received_msg=", received_msg)
+                r = requests.post(self.onechat_url1, json=req_body,
+                                  headers=self.sendmessage_headers, verify=False)
+                return r
+                # sendmessage_body = {
+                #     "to": one_id,
+                #     "bot_id": self.onechatbot_id,
+                #     "type": "text",
+                #     "message": "กรุณาเลือกอุปกรณ์ที่ต้องการลบ",
+                #     "custom_notification": "ตอบกลับข้อความคุณครับ"
+                # }
+                # sendmessage = requests.post(
+                #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                # return sendmessage
 
             else:
                 payload = [
