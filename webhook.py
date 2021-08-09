@@ -137,7 +137,7 @@ class Webhook(Resource):
                     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                 return sendmessage
 
-            elif (received_msg == 'อุปกรณ์'):
+            elif (received_msg == 'ลบอุปกรณ์'):
                 sendmessage_body = {
                     "to": one_id,
                     "bot_id": self.onechatbot_id,
