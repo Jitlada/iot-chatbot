@@ -123,26 +123,26 @@ class Webhook(Resource):
                 device_id = ''.join(random.choice(letters) for i in range(10))
                 secret_key = ''.join(random.choice(letters) for i in range(30))
                 print(
-                    device_id + "device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
+                    device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
                 print(
-                    secret_key + "secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+                    secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
                 sendmessage_body = {
                     "to": one_id,
                     "bot_id": self.onechatbot_id,
                     "type": "text",
-                    "message": "เพิ่มอุปกรณ์",
+                    "message": "กรุณาพิมพ์ชื่ออุปกรณ์",
                     "custom_notification": "ตอบกลับข้อความคุณครับ"
                 }
                 sendmessage = requests.post(
                     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                 return sendmessage
 
-            elif (received_msg == 'ลบอุปกรณ์'):
+            elif (received_msg == 'อุปกรณ์'):
                 sendmessage_body = {
                     "to": one_id,
                     "bot_id": self.onechatbot_id,
                     "type": "text",
-                    "message": "ลบอุปกรณ์",
+                    "message": "กรุณาเลือกอุปกรณ์ที่ต้องการลบ",
                     "custom_notification": "ตอบกลับข้อความคุณครับ"
                 }
                 sendmessage = requests.post(
@@ -405,7 +405,7 @@ class Webhook(Resource):
                       str(sendmessage_body))
                 return module.success()
 
-            if(data["event"] == 'message'):
+            elif(data["event"] == 'message'):
                 # message_db = self.get_message(1)
                 one_id = data['source']['one_id']
                 # one_id = 804228822528
