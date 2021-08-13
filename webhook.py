@@ -399,6 +399,18 @@ class Webhook(Resource):
         print("message: " + str(message))
         return message
 
+    # def check_action(self, one_id):
+    #     TAG = "check_action:"
+    #     database = Database()
+    #     cmd = """SELECT permissions.one_id FROM `permissions` WHERE permissions.one_id='%s' """ % (
+    #         one_id)
+    #     res = database.getData(cmd)
+    #     print(TAG, "res check_permission=", res)
+    #     if(res[0]['len'] > 0):
+    #         return True
+    #     else:
+    #         return False
+
     def post(self):
         TAG = "Webhook:"
         data = request.json
@@ -476,6 +488,8 @@ class Webhook(Resource):
                     print(TAG, "add=new_user=", add_user)
                     self.send_msg(one_id, "ขอบคุณที่เพิ่มเพื่อนค่ะ")
                 return module.success()
+
+            return module.success()
 
     # def get(self):
     #     args = request.args
