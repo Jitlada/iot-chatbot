@@ -85,7 +85,7 @@ class Webhook(Resource):
                                   headers=self.sendmessage_headers, verify=False)
                 return r
 
-            elif((received_msg == 'จัดการอุปกรณ์') and (received_msg == 'อุปกรณ์ทั้งหมด') and (received_msg == 'เพิ่มอุปกรณ์') and (received_msg == 'ลบอุปกรณ์')):
+            elif((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
                     all_devices = self.get_devices_user(one_id)
                     print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " + str(all_devices))
