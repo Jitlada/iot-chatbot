@@ -92,16 +92,47 @@ class Webhook(Resource):
                     return_device = all_devices[0]['result']
                     print("return_device deviceeeeeeeeeeeeeeeeeeeeeeee : " +
                           str(return_device))
-                    sendmessage_body = {
+                    payload = [
+                        {
+                            "label": "อุปกรณ์ทั้งหมด",
+                            "type": "text",
+                            "message": "อุปกรณ์ทั้งหมด",
+                            "payload": "manage_my_device"
+                        },
+                        {
+                            "label": "เพิ่มอุปกรณ์",
+                            "type": "text",
+                            "message": "เพิ่มอุปกรณ์",
+                            "payload": "manage_my_device"
+                        },
+                        {
+                            "label": "ลบอุปกรณ์",
+                            "type": "text",
+                            "message": "ลบอุปกรณ์",
+                            "payload": "manage_my_device"
+                        }
+                    ]
+                    req_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
-                        "type": "text",
                         "message": str(return_device),
-                        "custom_notification": "ตอบกลับข้อความคุณครับ"
+                        "quick_reply": payload
                     }
-                    sendmessage = requests.post(
-                        self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-                    return sendmessage
+                    print(TAG, "payload=", payload)
+                    print(TAG, "received_msg=", received_msg)
+                    r = requests.post(self.onechat_url1, json=req_body,
+                                      headers=self.sendmessage_headers, verify=False)
+                    return r
+                    # sendmessage_body = {
+                    #     "to": one_id,
+                    #     "bot_id": self.onechatbot_id,
+                    #     "type": "text",
+                    #     "message": str(return_device),
+                    #     "custom_notification": "ตอบกลับข้อความคุณครับ"
+                    # }
+                    # sendmessage = requests.post(
+                    #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                    # return sendmessage
 
                 elif (received_msg == 'เพิ่มอุปกรณ์'):
                     letters = string.ascii_letters
