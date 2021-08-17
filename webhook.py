@@ -46,7 +46,9 @@ class Webhook(Resource):
         action = self.get_action(one_id)
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
         devices = self.get_devices_user(one_id)
+        count = 0
         for item in devices[0]['result']:
+            count+1
             # print("itemmmmmmmmmmmm : " + item['device_name'])
             if(received_msg == item['device_name']):
                 print("itemmmmmmmmmmmmmmmmmmmmmmmmmm if device_name : " +
@@ -96,6 +98,7 @@ class Webhook(Resource):
                     }
                 )
 
+        print("countttttt : " + count)
         payload.append({
             "label": "จัดการอุปกรณ์",
             "type": "text",
