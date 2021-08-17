@@ -43,6 +43,8 @@ class Webhook(Resource):
     def send_quick_reply(self, one_id, received_msg):
         TAG = "send_quick_reply:"
 
+        action = self.get_action(one_id)
+        print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + action[0]['result'])
         devices = self.get_devices_user(one_id)
         for item in devices[0]['result']:
             if(received_msg == item):
@@ -305,9 +307,9 @@ class Webhook(Resource):
         TAG = "get_device:"
         database = Database()
         cmd = """SELECT devices.device_name FROM `devices` """
-        covid_res = database.getData(cmd)
+        device_res = database.getData(cmd)
         # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
-        return covid_res
+        return device_res
 
     def is_admin(self, one_id):
         TAG = "is_admin:"
@@ -405,6 +407,14 @@ class Webhook(Resource):
         message = database.getData(sql)
         print("message: " + str(message))
         return message
+
+    def get_action(self, one_id):
+        TAG = "get_device:"
+        database = Database()
+        cmd = """SELECT actions.action_code, actions.action FROM `actions`"""
+        action_res = database.getData(cmd)
+        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
+        return action_res
 
     # def check_action(self, one_id):
     #     TAG = "check_action:"
