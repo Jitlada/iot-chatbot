@@ -42,7 +42,7 @@ class Webhook(Resource):
     # def send_quick_reply(self, one_id, msg, payload):
     def send_quick_reply(self, one_id, received_msg):
         TAG = "send_quick_reply:"
-
+        payload_start = []
         action = self.get_action(one_id)
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
         devices = self.get_devices_user(one_id)
@@ -86,10 +86,9 @@ class Webhook(Resource):
                 return r
 
             else:
-                payload = []
                 print(
                     "itemmmmmmmmmmmmmmmmmmmmmmmmmm eles device_name : " + item['device_name'])
-                payload.append(
+                payload_start.append(
                     {
                         "label": item['device_name'],
                         "type": "text",
@@ -99,7 +98,7 @@ class Webhook(Resource):
                 )
 
         print("countttttt : " + str(count))
-        payload.append({
+        payload_start.append({
             "label": "จัดการอุปกรณ์",
             "type": "text",
                     "message": "จัดการอุปกรณ์",
@@ -110,9 +109,9 @@ class Webhook(Resource):
             "to": one_id,
             "bot_id": self.onechatbot_id,
             "message": "เลือกบริการ",
-            "quick_reply": payload
+            "quick_reply": payload_start
         }
-        print(TAG, "payload=", payload)
+        print(TAG, "payload=", payload_start)
         print(TAG, "received_msg=", received_msg)
         r = requests.post(self.onechat_url1, json=req_body,
                           headers=self.sendmessage_headers, verify=False)
