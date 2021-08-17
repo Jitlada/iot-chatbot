@@ -42,6 +42,12 @@ class Webhook(Resource):
     # def send_quick_reply(self, one_id, msg, payload):
     def send_quick_reply(self, one_id, received_msg):
         TAG = "send_quick_reply:"
+
+        devices = self.get_devices_user(one_id)
+        payload = []
+        for item in devices[0]['result']:
+            if(received_msg == item):
+                print("itemmmmmmmmmmmmmmmmmmmmmmmmmm : " + item)
         # "to": "804228822528",
         # "bot_id": "B0e42aac13b8d547ba303b00f8b225aa2",
         # "message": "เลือกบริการ",
