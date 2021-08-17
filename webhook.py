@@ -44,7 +44,7 @@ class Webhook(Resource):
         TAG = "send_quick_reply:"
 
         action = self.get_action(one_id)
-        print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + action[0]['result'])
+        print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + action)
         devices = self.get_devices_user(one_id)
         for item in devices[0]['result']:
             if(received_msg == item):
