@@ -51,7 +51,38 @@ class Webhook(Resource):
             if(received_msg == item['device_name']):
                 print("itemmmmmmmmmmmmmmmmmmmmmmmmmm if device_name : " +
                       item['device_name'])
-                # print(str(devices[0]['result'][0]['device_name']))
+                payload = [
+                    {
+                        "label": "เปิด",
+                        "type": "text",
+                        "message": "เปิด",
+                        "payload": "my_device"
+                    },
+                    {
+                        "label": "ปิด",
+                        "type": "text",
+                        "message": "ปิด",
+                        "payload": "my_device"
+                    },
+                    {
+                        "label": "แก้ไขอุปกรณ์",
+                        "type": "text",
+                        "message": "แก้ไขอุปกรณ์",
+                        "payload": "my_device"
+                    }
+                ]
+                req_body = {
+                    "to": one_id,
+                    "bot_id": self.onechatbot_id,
+                    "message": "",
+                    "quick_reply": payload
+                }
+                print(TAG, "payload=", payload)
+                print(TAG, "received_msg=", received_msg)
+                r = requests.post(self.onechat_url1, json=req_body,
+                                  headers=self.sendmessage_headers, verify=False)
+                return r
+
             else:
                 print(
                     "itemmmmmmmmmmmmmmmmmmmmmmmmmm eles device_name : " + item['device_name'])
