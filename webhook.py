@@ -48,6 +48,7 @@ class Webhook(Resource):
         devices = self.get_devices_user(one_id)
         for item in devices[0]['result']:
             print("itemmmmmmmmmmmmmmmmmmmmmmmmmm ifffffff : " + str(item))
+            print(str(devices[0]['result'][0]['device_name']))
             # if(received_msg == item):
             #     print("itemmmmmmmmmmmmmmmmmmmmmmmmmm ifffffff : " + str(item))
             #     # print(str(devices[0]['result'][0]['device_name']))
