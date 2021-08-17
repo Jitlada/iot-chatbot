@@ -47,10 +47,13 @@ class Webhook(Resource):
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
         devices = self.get_devices_user(one_id)
         for item in devices[0]['result']:
-            if(received_msg == item):
-                print("itemmmmmmmmmmmmmmmmmmmmmmmmmm ifffffff : " + item)
-            else:
-                print("itemmmmmmmmmmmmmmmmmmmmmmmmmm elseeeee : " + item)
+            print("itemmmmmmmmmmmmmmmmmmmmmmmmmm ifffffff : " + str(item))
+            # if(received_msg == item):
+            #     print("itemmmmmmmmmmmmmmmmmmmmmmmmmm ifffffff : " + str(item))
+            #     # print(str(devices[0]['result'][0]['device_name']))
+            # else:
+            #     print("itemmmmmmmmmmmmmmmmmmmmmmmmmm elseeeee : " + str(item))
+            #     # print(str(devices[0]['result'][0]['device_name']))
 
             # elif((received_msg != 'จัดการอุปกรณ์') and (received_msg != 'อุปกรณ์ทั้งหมด') and (received_msg != 'เพิ่มอุปกรณ์') and (received_msg != 'ลบอุปกรณ์')):
             #     # recv_msg = received_msg
