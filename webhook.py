@@ -98,7 +98,7 @@ class Webhook(Resource):
                     }
                 )
 
-        print("countttttt : " + count)
+        print("countttttt : " + str(count))
         payload.append({
             "label": "จัดการอุปกรณ์",
             "type": "text",
