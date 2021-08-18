@@ -50,40 +50,73 @@ class Webhook(Resource):
         for item in devices[0]['result']:
             count+1
             # print("itemmmmmmmmmmmm : " + item['device_name'])
-            if(received_msg == item['device_name']):
-                print("itemmmmmmmmmmmmmmmmmmmmmmmmmm if device_name : " +
-                      item['device_name'])
-                payload = [
-                    {
-                        "label": "เปิด",
-                        "type": "text",
-                        "message": "เปิด",
-                        "payload": "my_device"
-                    },
-                    {
-                        "label": "ปิด",
-                        "type": "text",
-                        "message": "ปิด",
-                        "payload": "my_device"
-                    },
-                    {
-                        "label": "แก้ไขอุปกรณ์",
-                        "type": "text",
-                        "message": "แก้ไขอุปกรณ์",
-                        "payload": "my_device"
+            if((received_msg == item['device_name']) or (received_msg == 'แก้ไขอุปกรณ์')):
+                if(received_msg == 'แก้ไขอุปกรณ์'):
+                    all_devices = self.get_devices_user(one_id)
+                    print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " + str(all_devices))
+                    return_device = all_devices[0]['result']
+                    print("return_device deviceeeeeeeeeeeeeeeeeeeeeeee : " +
+                          str(return_device))
+                    payload = [
+                        {
+                            "label": "เปลี่ยนชื่อ",
+                            "type": "text",
+                            "message": "เปลี่ยนชื่อ",
+                            "payload": "manage_my_device"
+                        },
+                        {
+                            "label": "แก้ไขข้อมูล",
+                            "type": "text",
+                            "message": "แก้ไขข้อมูล",
+                            "payload": "manage_my_device"
+                        }
+                    ]
+                    req_body = {
+                        "to": one_id,
+                        "bot_id": self.onechatbot_id,
+                        "message": str(return_device),
+                        "quick_reply": payload
                     }
-                ]
-                req_body = {
-                    "to": one_id,
-                    "bot_id": self.onechatbot_id,
-                    "message": "",
-                    "quick_reply": payload
-                }
-                print(TAG, "payload=", payload)
-                print(TAG, "received_msg=", received_msg)
-                r = requests.post(self.onechat_url1, json=req_body,
-                                  headers=self.sendmessage_headers, verify=False)
-                return r
+                    print(TAG, "payload=", payload)
+                    print(TAG, "received_msg=", received_msg)
+                    r = requests.post(self.onechat_url1, json=req_body,
+                                      headers=self.sendmessage_headers, verify=False)
+                    return r
+
+                else:
+                    print("itemmmmmmmmmmmmmmmmmmmmmmmmmm if device_name : " +
+                          item['device_name'])
+                    payload = [
+                        {
+                            "label": "เปิด",
+                            "type": "text",
+                            "message": "เปิด",
+                            "payload": "my_device"
+                        },
+                        {
+                            "label": "ปิด",
+                            "type": "text",
+                            "message": "ปิด",
+                            "payload": "my_device"
+                        },
+                        {
+                            "label": "แก้ไขอุปกรณ์",
+                            "type": "text",
+                            "message": "แก้ไขอุปกรณ์",
+                            "payload": "my_device"
+                        }
+                    ]
+                    req_body = {
+                        "to": one_id,
+                        "bot_id": self.onechatbot_id,
+                        "message": "",
+                        "quick_reply": payload
+                    }
+                    print(TAG, "payload=", payload)
+                    print(TAG, "received_msg=", received_msg)
+                    r = requests.post(self.onechat_url1, json=req_body,
+                                      headers=self.sendmessage_headers, verify=False)
+                    return r
 
             elif((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
