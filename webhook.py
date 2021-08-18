@@ -74,7 +74,7 @@ class Webhook(Resource):
                     req_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
-                        "message": str(return_device),
+                        "message": "",
                         "quick_reply": payload
                     }
                     print(TAG, "payload=", payload)
@@ -100,9 +100,9 @@ class Webhook(Resource):
                             "payload": "my_device"
                         },
                         {
-                            "label": "แก้ไขอุปกรณ์",
+                            "label": "แก้ไขเมนู",
                             "type": "text",
-                            "message": "แก้ไขอุปกรณ์",
+                            "message": "แก้ไขเมนู",
                             "payload": "my_device"
                         }
                     ]
