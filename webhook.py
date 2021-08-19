@@ -46,6 +46,7 @@ class Webhook(Resource):
         action = self.get_action(one_id)
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
         devices = self.get_device(one_id)
+        print("devicesdevicesdevicesdevicesdevicesdevices : "+devices)
         count = 0
         for item in devices[0]['result']:
             count+1
