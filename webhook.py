@@ -52,7 +52,7 @@ class Webhook(Resource):
             print("len = 0000000000000000000000000000000000")
             if((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
-                    all_devices = self.get_devices_user(one_id)
+                    all_devices = self.get_device(one_id)
                     print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " +
                           str(all_devices))
                     return_device = all_devices[0]['result']
@@ -701,7 +701,7 @@ class Webhook(Resource):
     def get_device(self, one_id):
         TAG = "get_device:"
         database = Database()
-        cmd = """SELECT devices.device_name FROM `devices` WHERE created_by='%s'""" % (
+        cmd = """SELECT devices.device_id, devices.device_name,devices.secret_key FROM `devices` WHERE created_by='%s'""" % (
             one_id)
         device_res = database.getData(cmd)
         return device_res
