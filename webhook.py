@@ -45,7 +45,7 @@ class Webhook(Resource):
         payload_start = []
         action = self.get_action(one_id)
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
-        devices = self.get_devices_user(one_id)
+        devices = self.get_device(one_id)
         count = 0
         for item in devices[0]['result']:
             count+1
@@ -550,9 +550,9 @@ class Webhook(Resource):
     def get_device(self, one_id):
         TAG = "get_device:"
         database = Database()
-        cmd = """SELECT devices.device_name FROM `devices` """
+        cmd = """SELECT devices.device_name FROM `devices` WHERE created_by='%s'""" % (
+            one_id)
         device_res = database.getData(cmd)
-        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
         return device_res
 
     def is_admin(self, one_id):
@@ -653,7 +653,7 @@ class Webhook(Resource):
         return message
 
     def get_action(self, one_id):
-        TAG = "get_device:"
+        TAG = "get_action:"
         database = Database()
         cmd = """SELECT actions.action_code, actions.action FROM `actions`"""
         action_res = database.getData(cmd)
