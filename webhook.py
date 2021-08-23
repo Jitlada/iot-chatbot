@@ -122,7 +122,7 @@ class Webhook(Resource):
                     return sendmessage
 
                 elif (received_msg == 'ลบอุปกรณ์'):
-                    devices = self.get_devices_user(one_id)
+                    devices = self.get_device(one_id)
                     payload = []
                     for item in devices[0]['result']:
                         payload.append(
