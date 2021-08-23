@@ -333,10 +333,20 @@ class Webhook(Resource):
                                             for i in range(10))
                         secret_key = ''.join(random.choice(letters)
                                              for i in range(30))
+                        device_token = secrets.token_urlsafe()
+
                         print(
                             device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
                         print(
                             secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+                        print(
+                            device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
+
+                        create_device = self.add_new_device(
+                            device_id, "name", secret_key, device_token, one_id)
+                        print(
+                            "create_devicecreate_devicecreate_device : " + create_device)
+
                         sendmessage_body = {
                             "to": one_id,
                             "bot_id": self.onechatbot_id,
