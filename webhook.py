@@ -55,8 +55,8 @@ class Webhook(Resource):
         count = 0
         if (devices[0]['len'] == 0):
             print("len = 0000000000000000000000000000000000")
-            print("addDevice_flg = " + str(addDevice_flg))
             if addDevice_flg == True:
+                print("inside addDevice_flg  addDevice_flg = " + str(addDevice_flg))
                 addDevice_flg = False
                 letters = string.ascii_letters
                 device_id = ''.join(random.choice(letters)
