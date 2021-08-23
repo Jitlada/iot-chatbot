@@ -55,6 +55,8 @@ class Webhook(Resource):
         count = 0
         if (devices[0]['len'] == 0):
             print("len = 0000000000000000000000000000000000")
+            print("Device name : "+str(received_msg))
+
             if self.addDevice_flg == True:
                 print("inside addDevice_flg  addDevice_flg = " +
                       str(self.addDevice_flg))
@@ -65,14 +67,10 @@ class Webhook(Resource):
                 secret_key = ''.join(random.choice(letters)
                                      for i in range(30))
                 device_token = secrets.token_urlsafe()
-                print(
-                    device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-                print(
-                    secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-                print(
-                    device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
                 self.add_new_device(device_id, "name",
                                     secret_key, device_token, one_id)
+
+                return
 
             if((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
