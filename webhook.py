@@ -56,7 +56,8 @@ class Webhook(Resource):
         if (devices[0]['len'] == 0):
             print("len = 0000000000000000000000000000000000")
             print("Device name : "+str(received_msg))
-
+            print("outside addDevice_flg = " +
+                  str(self.addDevice_flg))
             if self.addDevice_flg == True:
                 print("inside addDevice_flg  addDevice_flg = " +
                       str(self.addDevice_flg))
