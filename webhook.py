@@ -13,6 +13,8 @@ import secrets
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+addDevice_flg = False
+
 
 class Webhook(Resource):
     onechat_url = "https://chat-api.one.th"
@@ -23,8 +25,6 @@ class Webhook(Resource):
     sendmessage_headers = {"Authorization": onechat_dev_token}
 
     onechat_url1 = onechat_url + '/message/api/v1/push_quickreply'
-
-    addDevice_flg = False
 
     def send_msg(self, one_id, reply_msg):
         TAG = "send_msg:"
