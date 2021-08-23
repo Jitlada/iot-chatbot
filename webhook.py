@@ -110,6 +110,11 @@ class Webhook(Resource):
                         device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
                     print(
                         secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+
+                    create_device = self.add_new_device(
+                        device_id, "name", secret_key, one_id)
+                    print("create_devicecreate_devicecreate_device : " + create_device)
+
                     sendmessage_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
@@ -822,6 +827,17 @@ class Webhook(Resource):
     #         return True
     #     else:
     #         return False
+
+    def add_new_device(self, device_id, device_name, secret_key, one_id):
+        TAG = "add_new_device:"
+        database = Database()
+        print(TAG, "add  new device in my devices")
+        sql = """INSERT INTO devices (device_id, device_name, secret_key, created_by) VALUES ('%s', '%s', '%s', '%s')""" % (
+            device_id, device_name, secret_key, one_id)
+        # print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
+        # insert = database.insertData(sql)
+        # return insert
+        return sql
 
     def post(self):
         TAG = "Webhook:"
