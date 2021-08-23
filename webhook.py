@@ -24,7 +24,7 @@ class Webhook(Resource):
 
     onechat_url1 = onechat_url + '/message/api/v1/push_quickreply'
 
-    addDevice_flg = False
+    addDevice_flg
 
     def send_msg(self, one_id, reply_msg):
         TAG = "send_msg:"
@@ -46,7 +46,7 @@ class Webhook(Resource):
     def send_quick_reply(self, one_id, received_msg):
         TAG = "send_quick_reply:"
         # add_device_flg = False
-        addDevice_flg = self.addDevice_flg
+        # addDevice_flg = self.addDevice_flg
         payload_start = []
         action = self.get_action(one_id)
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
@@ -55,9 +55,10 @@ class Webhook(Resource):
         count = 0
         if (devices[0]['len'] == 0):
             print("len = 0000000000000000000000000000000000")
-            if addDevice_flg == True:
-                print("inside addDevice_flg  addDevice_flg = " + str(addDevice_flg))
-                addDevice_flg = False
+            if self.addDevice_flg == True:
+                print("inside addDevice_flg  addDevice_flg = " +
+                      str(self.addDevice_flg))
+                self.addDevice_flg = False
                 letters = string.ascii_letters
                 device_id = ''.join(random.choice(letters)
                                     for i in range(10))
@@ -123,9 +124,9 @@ class Webhook(Resource):
                     #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                     # return sendmessage
 
-                elif ((received_msg == 'เพิ่มอุปกรณ์') and (addDevice_flg == False)):
-                    addDevice_flg = True
-                    print("adddevice_flg: " + str(addDevice_flg))
+                elif ((received_msg == 'เพิ่มอุปกรณ์') and (self.addDevice_flg == False)):
+                    self.addDevice_flg = True
+                    print("adddevice_flg: " + str(self.addDevice_flg))
                     # add_device_flg = True
                     # letters = string.ascii_letters
                     # device_id = ''.join(random.choice(letters)
