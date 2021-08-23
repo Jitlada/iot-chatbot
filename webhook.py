@@ -125,6 +125,7 @@ class Webhook(Resource):
 
                 elif ((received_msg == 'เพิ่มอุปกรณ์') and (addDevice_flg == False)):
                     addDevice_flg = True
+                    print("adddevice_flg: " + str(addDevice_flg))
                     # add_device_flg = True
                     # letters = string.ascii_letters
                     # device_id = ''.join(random.choice(letters)
