@@ -26,6 +26,8 @@ class Webhook(Resource):
 
     onechat_url1 = onechat_url + '/message/api/v1/push_quickreply'
 
+    global addDevice_flg
+
     def send_msg(self, one_id, reply_msg):
         TAG = "send_msg:"
 
