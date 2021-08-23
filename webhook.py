@@ -9,6 +9,7 @@ import json
 import threading
 import string
 import random
+import secrets
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -106,13 +107,16 @@ class Webhook(Resource):
                                         for i in range(10))
                     secret_key = ''.join(random.choice(letters)
                                          for i in range(30))
+                    device_token = secrets.token_urlsafe()
                     print(
                         device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
                     print(
                         secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+                    print(
+                        device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
 
                     create_device = self.add_new_device(
-                        device_id, "name", secret_key, one_id)
+                        device_id, "name", secret_key, device_token, one_id)
                     print("create_devicecreate_devicecreate_device : " + create_device)
 
                     sendmessage_body = {
@@ -828,12 +832,12 @@ class Webhook(Resource):
     #     else:
     #         return False
 
-    def add_new_device(self, device_id, device_name, secret_key, one_id):
+    def add_new_device(self, device_id, device_name, secret_key, device_token, one_id):
         TAG = "add_new_device:"
         database = Database()
         print(TAG, "add  new device in my devices")
-        sql = """INSERT INTO devices (device_id, device_name, secret_key, created_by) VALUES ('%s', '%s', '%s', '%s')""" % (
-            device_id, device_name, secret_key, one_id)
+        sql = """INSERT INTO devices (device_id, device_name, secret_key, device_token, created_by) VALUES ('%s', '%s', '%s', '%s', '%s')""" % (
+            device_id, device_name, secret_key, device_token, one_id)
         # print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
         # insert = database.insertData(sql)
         # return insert
