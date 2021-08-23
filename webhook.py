@@ -46,7 +46,7 @@ class Webhook(Resource):
     def send_quick_reply(self, one_id, received_msg):
         TAG = "send_quick_reply:"
         # add_device_flg = False
-        addDevice_flg = self.addDevice_flg
+        global addDevice_flg
         payload_start = []
         action = self.get_action(one_id)
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
