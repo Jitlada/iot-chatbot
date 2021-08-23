@@ -24,6 +24,8 @@ class Webhook(Resource):
 
     onechat_url1 = onechat_url + '/message/api/v1/push_quickreply'
 
+    addDevice_flg = False
+
     def send_msg(self, one_id, reply_msg):
         TAG = "send_msg:"
 
@@ -43,6 +45,8 @@ class Webhook(Resource):
     # def send_quick_reply(self, one_id, msg, payload):
     def send_quick_reply(self, one_id, received_msg):
         TAG = "send_quick_reply:"
+        # add_device_flg = False
+        addDevice_flg = self.addDevice_flg
         payload_start = []
         action = self.get_action(one_id)
         print("actionnnnnnnnnnnnnnnnnnnnnnnnn : " + str(action))
@@ -51,6 +55,23 @@ class Webhook(Resource):
         count = 0
         if (devices[0]['len'] == 0):
             print("len = 0000000000000000000000000000000000")
+            if addDevice_flg == True:
+                addDevice_flg = False
+                letters = string.ascii_letters
+                device_id = ''.join(random.choice(letters)
+                                    for i in range(10))
+                secret_key = ''.join(random.choice(letters)
+                                     for i in range(30))
+                device_token = secrets.token_urlsafe()
+                print(
+                    device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
+                print(
+                    secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+                print(
+                    device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
+                self.add_new_device(device_id, received_msg,
+                                    secret_key, device_token, one_id)
+
             if((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
                     all_devices = self.get_device(one_id)
@@ -101,23 +122,25 @@ class Webhook(Resource):
                     #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                     # return sendmessage
 
-                elif (received_msg == 'เพิ่มอุปกรณ์'):
-                    letters = string.ascii_letters
-                    device_id = ''.join(random.choice(letters)
-                                        for i in range(10))
-                    secret_key = ''.join(random.choice(letters)
-                                         for i in range(30))
-                    device_token = secrets.token_urlsafe()
-                    print(
-                        device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-                    print(
-                        secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-                    print(
-                        device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
+                elif ((received_msg == 'เพิ่มอุปกรณ์') and (addDevice_flg == False)):
+                    addDevice_flg = True
+                    # add_device_flg = True
+                    # letters = string.ascii_letters
+                    # device_id = ''.join(random.choice(letters)
+                    #                     for i in range(10))
+                    # secret_key = ''.join(random.choice(letters)
+                    #                      for i in range(30))
+                    # device_token = secrets.token_urlsafe()
+                    # print(
+                    #     device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
+                    # print(
+                    #     secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+                    # print(
+                    #     device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
 
-                    create_device = self.add_new_device(
-                        device_id, "name", secret_key, device_token, one_id)
-                    print("create_devicecreate_devicecreate_device : " + create_device)
+                    # create_device = self.add_new_device(
+                    #     device_id, "name", secret_key, device_token, one_id)
+                    # print("create_devicecreate_devicecreate_device : " + create_device)
 
                     sendmessage_body = {
                         "to": one_id,
@@ -128,6 +151,7 @@ class Webhook(Resource):
                     }
                     sendmessage = requests.post(
                         self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+
                     return sendmessage
 
                 elif (received_msg == 'ลบอุปกรณ์'):
@@ -203,6 +227,26 @@ class Webhook(Resource):
                     r = requests.post(self.onechat_url1, json=req_body,
                                       headers=self.sendmessage_headers, verify=False)
                     return r
+
+            # else:
+            #     if (add_device_flg == True):
+            #             letters = string.ascii_letters
+            #             device_id = ''.join(random.choice(letters)
+            #                                 for i in range(10))
+            #             secret_key = ''.join(random.choice(letters)
+            #                                 for i in range(30))
+            #             device_token = secrets.token_urlsafe()
+            #             print(
+            #                 device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
+            #             print(
+            #                 secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+            #             print(
+            #                 device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
+
+            #             create_device = self.add_new_device(
+            #                 device_id, "name", secret_key, device_token, one_id)
+            #             print("create_devicecreate_devicecreate_device : " + create_device)
+            #             add_device_flg = False
 
         else:
             for item in devices[0]['result']:
