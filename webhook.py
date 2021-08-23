@@ -59,8 +59,8 @@ class Webhook(Resource):
             print("len = 0000000000000000000000000000000000")
             print("Device name : "+str(received_msg))
             print("outside addDevice_flg = " +
-                  str(self.addDevice_flg))
-            if self.addDevice_flg == True:
+                  str(addDevice_flg))
+            if addDevice_flg == True:
                 print("inside addDevice_flg  addDevice_flg = " +
                       str(self.addDevice_flg))
                 self.addDevice_flg = False
@@ -125,9 +125,9 @@ class Webhook(Resource):
                     #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                     # return sendmessage
 
-                elif ((received_msg == 'เพิ่มอุปกรณ์') and (self.addDevice_flg == False)):
+                elif ((received_msg == 'เพิ่มอุปกรณ์') and (addDevice_flg == False)):
                     self.addDevice_flg = True
-                    print("adddevice_flg: " + str(self.addDevice_flg))
+                    print("adddevice_flg: " + str(addDevice_flg))
                     # add_device_flg = True
                     # letters = string.ascii_letters
                     # device_id = ''.join(random.choice(letters)
