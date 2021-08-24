@@ -24,8 +24,8 @@ class Webhook(Resource):
 
     onechat_url1 = onechat_url + '/message/api/v1/push_quickreply'
 
-    def __init__(self):
-        self.addDevice_flg = False
+    # def __init__(self):
+    #     self.addDevice_flg = False
 
     def send_msg(self, one_id, reply_msg):
         TAG = "send_msg:"
@@ -54,25 +54,30 @@ class Webhook(Resource):
         devices = self.get_device(one_id)
         print("devicesdevicesdevicesdevicesdevicesdevices : "+str(devices))
         count = 0
+
+        add_flg = self.readaddStatus()
+        # delete_flg = readdeleteStatus();
+        # edit_flg = readeditStatus();
+
         if (devices[0]['len'] == 0):
             print("len = 0000000000000000000000000000000000")
-            print("Device name : "+str(received_msg))
-            print("outside addDevice_flg = " +
-                  str(self.addDevice_flg))
-            if self.addDevice_flg == True:
-                print("inside addDevice_flg  addDevice_flg = " +
-                      str(self.addDevice_flg))
-                self.addDevice_flg = False
-                letters = string.ascii_letters
-                device_id = ''.join(random.choice(letters)
-                                    for i in range(10))
-                secret_key = ''.join(random.choice(letters)
-                                     for i in range(30))
-                device_token = secrets.token_urlsafe()
-                self.add_new_device(device_id, "name",
-                                    secret_key, device_token, one_id)
+            # print("Device name : "+str(received_msg))
+            # print("outside addDevice_flg = " +
+            #       str(self.addDevice_flg))
+            # if add_flg == 1:
+            #     print("inside addDevice_flg  addDevice_flg = " +
+            #           str(self.addDevice_flg))
+            #     self.addDevice_flg = False
+            #     letters = string.ascii_letters
+            #     device_id = ''.join(random.choice(letters)
+            #                         for i in range(10))
+            #     secret_key = ''.join(random.choice(letters)
+            #                          for i in range(30))
+            #     device_token = secrets.token_urlsafe()
+            #     self.add_new_device(device_id, received_msg,
+            #                         secret_key, device_token, one_id)
 
-                return
+            #     return "done"
 
             if((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
@@ -124,9 +129,9 @@ class Webhook(Resource):
                     #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                     # return sendmessage
 
-                elif ((received_msg == 'เพิ่มอุปกรณ์') and (self.addDevice_flg == False)):
-                    self.addDevice_flg = True
-                    print("adddevice_flg: " + str(self.addDevice_flg))
+                elif ((received_msg == 'เพิ่มอุปกรณ์')):
+                    # self.addDevice_flg = True
+                    # print("adddevice_flg: " + str(self.addDevice_flg))
                     # add_device_flg = True
                     # letters = string.ascii_letters
                     # device_id = ''.join(random.choice(letters)
@@ -144,6 +149,7 @@ class Webhook(Resource):
                     # create_device = self.add_new_device(
                     #     device_id, "name", secret_key, device_token, one_id)
                     # print("create_devicecreate_devicecreate_device : " + create_device)
+                    self.update_status(1, 0, 0, 0, 0, 0)
 
                     sendmessage_body = {
                         "to": one_id,
@@ -231,25 +237,26 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-            # else:
-            #     if (add_device_flg == True):
-            #             letters = string.ascii_letters
-            #             device_id = ''.join(random.choice(letters)
-            #                                 for i in range(10))
-            #             secret_key = ''.join(random.choice(letters)
-            #                                 for i in range(30))
-            #             device_token = secrets.token_urlsafe()
-            #             print(
-            #                 device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-            #             print(
-            #                 secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-            #             print(
-            #                 device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
+            else:
+                if (add_flg == 1):
+                    letters = string.ascii_letters
+                    device_id = ''.join(random.choice(letters)
+                                        for i in range(10))
+                    secret_key = ''.join(random.choice(letters)
+                                         for i in range(30))
+                    device_token = secrets.token_urlsafe()
+                    print(
+                        device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
+                    print(
+                        secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+                    print(
+                        device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
 
-            #             create_device = self.add_new_device(
-            #                 device_id, "name", secret_key, device_token, one_id)
-            #             print("create_devicecreate_devicecreate_device : " + create_device)
-            #             add_device_flg = False
+                    create_device = self.add_new_device(
+                        device_id, received_msg, secret_key, device_token, one_id)
+                    self.update_status(0, 0, 0, 0, 0, 0)
+                    print("create_devicecreate_devicecreate_device : " + create_device)
+                    return "success"
 
         else:
             for item in devices[0]['result']:
@@ -690,6 +697,14 @@ class Webhook(Resource):
     #     insert = database.insertData(sql)
     #     return insert
 
+    def readaddStatus(self):
+        print("readaddStatus")
+        database = Database()
+        sql = """SELECT status_message.add_device FROM status_message"""
+        message = database.getData(sql)
+        print("message: " + str(message))
+        return message
+
     def get_onechat_token(self, auth):
         TAG = "get_onechat_token:"
         module = Module()
@@ -899,6 +914,21 @@ class Webhook(Resource):
         # insert = database.insertData(sql)
         # return insert
         return sql
+
+    def set_status_message(self, one_id):
+        TAG = "set_status_message:"
+        database = Database()
+        sql = """INSERT INTO status_message (add_device, edit_device, delete_device, add_menu, edit_menu, delete_menu) VALUES ('0', '0', '0', '0', '0', '0')"""
+        insert = database.insertData(sql)
+        return insert
+
+    def update_status(self, add_d, edt_d, del_d, add_m, edt_m, del_m):
+        TAG = "update_status:"
+        database = Database()
+        sql = """UPDATE `status_message` SET add_device='%s', edit_device='%s', delete_device='%s', add_menu='%s', edit_menu='%s', delete_menu='%s' """ % (
+            add_d, edt_d, del_d, add_m, edt_m, del_m)
+        insert = database.insertData(sql)
+        return insert
 
     def post(self):
         TAG = "Webhook:"
