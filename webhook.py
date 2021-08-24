@@ -74,18 +74,41 @@ class Webhook(Resource):
                 secret_key = ''.join(random.choice(letters)
                                      for i in range(30))
                 device_token = secrets.token_urlsafe()
-                print(
-                    device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-                print(
-                    secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-                print(
-                    device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
-
                 create_device = self.add_new_device(
                     device_id, received_msg, secret_key, device_token, one_id)
-                self.set_status_message()
+                self.update_status(0, 0, 0, 0, 0, 0)
                 print("create_devicecreate_devicecreate_device : " + create_device)
-                return "success"
+                payload = [
+                    {
+                        "label": "อุปกรณ์ทั้งหมด",
+                        "type": "text",
+                        "message": "อุปกรณ์ทั้งหมด",
+                        "payload": "manage_my_device"
+                    },
+                    {
+                        "label": "เพิ่มอุปกรณ์",
+                        "type": "text",
+                        "message": "เพิ่มอุปกรณ์",
+                        "payload": "manage_my_device"
+                    },
+                    {
+                        "label": "ลบอุปกรณ์",
+                        "type": "text",
+                        "message": "ลบอุปกรณ์",
+                        "payload": "manage_my_device"
+                    }
+                ]
+                req_body = {
+                    "to": one_id,
+                    "bot_id": self.onechatbot_id,
+                    "message": "เพิ่มอุปกรณ์สำเร็จ",
+                    "quick_reply": payload
+                }
+                print(TAG, "payload=", payload)
+                print(TAG, "received_msg=", received_msg)
+                r = requests.post(self.onechat_url1, json=req_body,
+                                  headers=self.sendmessage_headers, verify=False)
+                return r
 
             if((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
