@@ -56,7 +56,8 @@ class Webhook(Resource):
         count = 0
 
         add_flg = self.readaddStatus()
-        print("add_flg : "+str(add_flg['result']['add_device']))
+        add_flg_s = add_flg[0]['result']['add_device']
+        print("add_flg : "+str(add_flg_s))
         # delete_flg = readdeleteStatus();
         # edit_flg = readeditStatus();
 
