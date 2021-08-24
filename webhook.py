@@ -67,7 +67,7 @@ class Webhook(Resource):
             # print("Device name : "+str(received_msg))
             # print("outside addDevice_flg = " +
             #       str(self.addDevice_flg))
-            if (add_flg[0]['result'] == 1):
+            if (add_flg[0]['result'][0]['add_device'] == 1):
                 letters = string.ascii_letters
                 device_id = ''.join(random.choice(letters)
                                     for i in range(10))
