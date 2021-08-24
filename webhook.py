@@ -499,25 +499,25 @@ class Webhook(Resource):
                         }
                     )
 
-        # print("countttttt : " + str(count))
-        # payload_start.append({
-        #     "label": "จัดการอุปกรณ์",
-        #     "type": "text",
-        #             "message": "จัดการอุปกรณ์",
-        #             "payload": "my_devices"
-        # })
+        print("countttttt : " + str(count))
+        payload_start.append({
+            "label": "จัดการอุปกรณ์",
+            "type": "text",
+                    "message": "จัดการอุปกรณ์",
+                    "payload": "my_devices"
+        })
 
-        # req_body = {
-        #     "to": one_id,
-        #     "bot_id": self.onechatbot_id,
-        #     "message": "เลือกบริการ",
-        #     "quick_reply": payload_start
-        # }
-        # print(TAG, "payload=", payload_start)
-        # print(TAG, "received_msg=", received_msg)
-        # r = requests.post(self.onechat_url1, json=req_body,
-        #                   headers=self.sendmessage_headers, verify=False)
-        # return r
+        req_body = {
+            "to": one_id,
+            "bot_id": self.onechatbot_id,
+            "message": "เลือกบริการ",
+            "quick_reply": payload_start
+        }
+        print(TAG, "payload=", payload_start)
+        print(TAG, "received_msg=", received_msg)
+        r = requests.post(self.onechat_url1, json=req_body,
+                          headers=self.sendmessage_headers, verify=False)
+        return r
 
         # elif((received_msg != 'จัดการอุปกรณ์') and (received_msg != 'อุปกรณ์ทั้งหมด') and (received_msg != 'เพิ่มอุปกรณ์') and (received_msg != 'ลบอุปกรณ์')):
         #     # recv_msg = received_msg
