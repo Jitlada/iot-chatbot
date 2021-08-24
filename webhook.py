@@ -65,25 +65,25 @@ class Webhook(Resource):
             # print("Device name : "+str(received_msg))
             # print("outside addDevice_flg = " +
             #       str(self.addDevice_flg))
-            if (add_flg == 1):
-                letters = string.ascii_letters
-                device_id = ''.join(random.choice(letters)
-                                    for i in range(10))
-                secret_key = ''.join(random.choice(letters)
-                                     for i in range(30))
-                device_token = secrets.token_urlsafe()
-                print(
-                    device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-                print(
-                    secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-                print(
-                    device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
+            # if (add_flg == 1):
+            #     letters = string.ascii_letters
+            #     device_id = ''.join(random.choice(letters)
+            #                         for i in range(10))
+            #     secret_key = ''.join(random.choice(letters)
+            #                          for i in range(30))
+            #     device_token = secrets.token_urlsafe()
+            #     print(
+            #         device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
+            #     print(
+            #         secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
+            #     print(
+            #         device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
 
-                create_device = self.add_new_device(
-                    device_id, received_msg, secret_key, device_token, one_id)
-                self.update_status(0, 0, 0, 0, 0, 0)
-                print("create_devicecreate_devicecreate_device : " + create_device)
-                return "success"
+            #     create_device = self.add_new_device(
+            #         device_id, received_msg, secret_key, device_token, one_id)
+            #     self.update_status(0, 0, 0, 0, 0, 0)
+            #     print("create_devicecreate_devicecreate_device : " + create_device)
+            #     return "success"
 
             if((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
