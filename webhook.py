@@ -83,7 +83,7 @@ class Webhook(Resource):
 
                 create_device = self.add_new_device(
                     device_id, received_msg, secret_key, device_token, one_id)
-                self.update_status(0, 0, 0, 0, 0, 0)
+                self.set_status_message()
                 print("create_devicecreate_devicecreate_device : " + create_device)
                 return "success"
 
