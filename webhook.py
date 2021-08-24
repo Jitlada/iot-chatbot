@@ -923,7 +923,7 @@ class Webhook(Resource):
         # return insert
         return sql
 
-    def set_status_message(self, one_id):
+    def set_status_message(self):
         TAG = "set_status_message:"
         database = Database()
         sql = """INSERT INTO status_message (add_device, edit_device, delete_device, add_menu, edit_menu, delete_menu) VALUES ('0', '0', '0', '0', '0', '0')"""
