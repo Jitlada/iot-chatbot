@@ -161,7 +161,7 @@ class Webhook(Resource):
                 req_body = {
                     "to": one_id,
                     "bot_id": self.onechatbot_id,
-                    "message": "เพิ่มอุปกรณ์สำเร็จ",
+                    "message": "",
                     "quick_reply": payload
                 }
                 print(TAG, "payload=", payload)
