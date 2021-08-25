@@ -79,68 +79,19 @@ class Webhook(Resource):
                         device_id, received_msg, secret_key, device_token, one_id)
                     self.update_status(0, 0, 0, 0, 0, 0)
                     print("create_devicecreate_devicecreate_device : " + create_device)
-                    payload = [
-                        {
-                            "label": "อุปกรณ์ทั้งหมด",
-                            "type": "text",
-                            "message": "อุปกรณ์ทั้งหมด",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "เพิ่มอุปกรณ์",
-                            "type": "text",
-                            "message": "เพิ่มอุปกรณ์",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "ลบอุปกรณ์",
-                            "type": "text",
-                            "message": "ลบอุปกรณ์",
-                            "payload": "manage_my_device"
-                        }
-                    ]
-                    req_body = {
-                        "to": one_id,
-                        "bot_id": self.onechatbot_id,
-                        "message": "เพิ่มอุปกรณ์สำเร็จ",
-                        "quick_reply": payload
-                    }
-                    print(TAG, "payload=", payload)
-                    print(TAG, "received_msg=", received_msg)
-                    r = requests.post(self.onechat_url1, json=req_body,
+
+                    reply_message = "เพิ่มอุปกรณ์สำเร็จ"
+                    send_reply_message = self.send_quick_reply_manage(
+                        one_id, received_msg, reply_message)
+                    r = requests.post(self.onechat_url1, json=send_reply_message,
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
                 elif (received_msg == 'ยกเลิก'):
-                    payload = [
-                        {
-                            "label": "อุปกรณ์ทั้งหมด",
-                            "type": "text",
-                            "message": "อุปกรณ์ทั้งหมด",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "เพิ่มอุปกรณ์",
-                            "type": "text",
-                            "message": "เพิ่มอุปกรณ์",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "ลบอุปกรณ์",
-                            "type": "text",
-                            "message": "ลบอุปกรณ์",
-                            "payload": "manage_my_device"
-                        }
-                    ]
-                    req_body = {
-                        "to": one_id,
-                        "bot_id": self.onechatbot_id,
-                        "message": "",
-                        "quick_reply": payload
-                    }
-                    print(TAG, "payload=", payload)
-                    print(TAG, "received_msg=", received_msg)
-                    r = requests.post(self.onechat_url1, json=req_body,
+                    reply_message = ""
+                    send_reply_message = self.send_quick_reply_manage(
+                        one_id, received_msg, reply_message)
+                    r = requests.post(self.onechat_url1, json=send_reply_message,
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
@@ -787,6 +738,38 @@ class Webhook(Resource):
     #           % (email, name, one_id)
     #     insert = database.insertData(sql)
     #     return insert
+
+    def send_quick_reply_manage(self, one_id, received_msg, reply_msg):
+        TAG = "send_quick_reply_manage:"
+        payload = [
+            {
+                "label": "อุปกรณ์ทั้งหมด",
+                "type": "text",
+                        "message": "อุปกรณ์ทั้งหมด",
+                        "payload": "manage_my_device"
+            },
+            {
+                "label": "เพิ่มอุปกรณ์",
+                "type": "text",
+                        "message": "เพิ่มอุปกรณ์",
+                        "payload": "manage_my_device"
+            },
+            {
+                "label": "ลบอุปกรณ์",
+                "type": "text",
+                        "message": "ลบอุปกรณ์",
+                        "payload": "manage_my_device"
+            }
+        ]
+        req_body = {
+            "to": one_id,
+            "bot_id": self.onechatbot_id,
+            "message": reply_msg,
+            "quick_reply": payload
+        }
+        print(TAG, "payload=", payload)
+        print(TAG, "received_msg=", received_msg)
+        return req_body
 
     def readaddStatus(self):
         print("readaddStatus")
