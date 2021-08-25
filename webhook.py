@@ -311,9 +311,9 @@ class Webhook(Resource):
                                 "payload": "my_device"
                             },
                             {
-                                "label": "แก้ไขเมนู",
+                                "label": "แก้ไขอุปกรณ์",
                                 "type": "text",
-                                "message": "แก้ไขเมนู",
+                                "message": "แก้ไขอุปกรณ์",
                                 "payload": "my_device"
                             }
                         ]
