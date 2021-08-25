@@ -276,9 +276,9 @@ class Webhook(Resource):
                                 "payload": "manage_my_device"
                             },
                             {
-                                "label": "แก้ไขข้อมูล",
+                                "label": "แก้ไขเมนู",
                                 "type": "text",
-                                "message": "แก้ไขข้อมูล",
+                                "message": "แก้ไขเมนู",
                                 "payload": "manage_my_device"
                             }
                         ]
