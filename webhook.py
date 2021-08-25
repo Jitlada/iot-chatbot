@@ -213,7 +213,7 @@ class Webhook(Resource):
                 if (del_flg[0]['result'][0]['delete_device'] == 1):
                     self.update_status(0, 0, 1, 0, 0, 0, received_msg)
                     if (received_msg == 'ตกลง'):
-                        create_device = self.delete_device(
+                        self.delete_device(
                             device_name_flg[0]['result'][0]['device_name_msg'])
                         self.update_status(0, 0, 0, 0, 0, 0, "")
 
