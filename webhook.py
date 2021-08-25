@@ -59,6 +59,9 @@ class Webhook(Resource):
         print("add_flg : "+str(add_flg[0]['result'][0]['add_device']))
         del_flg = self.readdeleteStatus()
         print("del_flg : "+str(del_flg[0]['result'][0]['delete_device']))
+        device_name_flg = self.readdeviceNameStatus()
+        print("device_name_flg : " +
+              device_name_flg[0]['result'][0]['device_name_msg'])
         # delete_flg = readdeleteStatus();
         # edit_flg = readeditStatus();
 
@@ -68,6 +71,7 @@ class Webhook(Resource):
             # print("outside addDevice_flg = " +
             #       str(self.addDevice_flg))
             if (add_flg[0]['result'][0]['add_device'] == 1):
+                self.update_status(1, 0, 0, 0, 0, 0, received_msg)
                 if (received_msg == 'ตกลง'):
                     letters = string.ascii_letters
                     device_id = ''.join(random.choice(letters)
@@ -76,8 +80,8 @@ class Webhook(Resource):
                                          for i in range(30))
                     device_token = secrets.token_urlsafe()
                     create_device = self.add_new_device(
-                        device_id, received_msg, secret_key, device_token, one_id)
-                    self.update_status(0, 0, 0, 0, 0, 0)
+                        device_id, device_name_flg[0]['result'][0]['device_name_msg'], secret_key, device_token, one_id)
+                    self.update_status(0, 0, 0, 0, 0, 0, "")
 
                     reply_message = "เพิ่มอุปกรณ์สำเร็จ"
                     send_reply_message = self.send_quick_reply_manage(
@@ -87,7 +91,7 @@ class Webhook(Resource):
                     return r
 
                 elif (received_msg == 'ยกเลิก'):
-                    self.update_status(0, 0, 0, 0, 0, 0)
+                    self.update_status(0, 0, 0, 0, 0, 0, "")
                     reply_message = ""
                     send_reply_message = self.send_quick_reply_manage(
                         one_id, received_msg, reply_message)
@@ -123,7 +127,7 @@ class Webhook(Resource):
 
             if (del_flg[0]['result'][0]['delete_device'] == 1):
                 if (received_msg == 'ยกเลิก'):
-                    self.update_status(0, 0, 0, 0, 0, 0)
+                    self.update_status(0, 0, 0, 0, 0, 0, "")
                     reply_message = ""
                     send_reply_message = self.send_quick_reply_manage(
                         one_id, received_msg, reply_message)
@@ -148,7 +152,7 @@ class Webhook(Resource):
                     return r
 
                 elif ((received_msg == 'เพิ่มอุปกรณ์')):
-                    self.update_status(1, 0, 0, 0, 0, 0)
+                    self.update_status(1, 0, 0, 0, 0, 0, "")
                     sendmessage_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
@@ -688,6 +692,14 @@ class Webhook(Resource):
         print("message: " + str(message))
         return message
 
+    def readdeviceNameStatus(self):
+        print("readdeviceNameStatus")
+        database = Database()
+        sql = """SELECT status_message.device_name_msg FROM status_message"""
+        message = database.getData(sql)
+        print("message: " + str(message))
+        return message
+
     def get_onechat_token(self, auth):
         TAG = "get_onechat_token:"
         module = Module()
@@ -915,11 +927,11 @@ class Webhook(Resource):
         insert = database.insertData(sql)
         return insert
 
-    def update_status(self, add_d, edt_d, del_d, add_m, edt_m, del_m):
+    def update_status(self, add_d, edt_d, del_d, add_m, edt_m, del_m, device_n_msg):
         TAG = "update_status:"
         database = Database()
-        sql = """UPDATE `status_message` SET add_device='%s', edit_device='%s', delete_device='%s', add_menu='%s', edit_menu='%s', delete_menu='%s' """ % (
-            add_d, edt_d, del_d, add_m, edt_m, del_m)
+        sql = """UPDATE `status_message` SET add_device='%s', edit_device='%s', delete_device='%s', add_menu='%s', edit_menu='%s', delete_menu='%s', device_name_msg='%s' """ % (
+            add_d, edt_d, del_d, add_m, edt_m, del_m, device_n_msg)
         insert = database.insertData(sql)
         return insert
 
