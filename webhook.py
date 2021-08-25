@@ -166,7 +166,7 @@ class Webhook(Resource):
                     return sendmessage
 
                 elif (received_msg == 'ลบอุปกรณ์'):
-                    self.update_status(0, 0, 1, 0, 0, 0)
+                    self.update_status(0, 0, 1, 0, 0, 0, "")
                     devices = self.get_device(one_id)
                     payload = []
                     for item in devices[0]['result']:
