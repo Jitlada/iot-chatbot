@@ -130,70 +130,16 @@ class Webhook(Resource):
                     return_device = all_devices[0]['result']
                     print("return_device deviceeeeeeeeeeeeeeeeeeeeeeee : " +
                           str(return_device))
-                    payload = [
-                        {
-                            "label": "อุปกรณ์ทั้งหมด",
-                            "type": "text",
-                            "message": "อุปกรณ์ทั้งหมด",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "เพิ่มอุปกรณ์",
-                            "type": "text",
-                            "message": "เพิ่มอุปกรณ์",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "ลบอุปกรณ์",
-                            "type": "text",
-                            "message": "ลบอุปกรณ์",
-                            "payload": "manage_my_device"
-                        }
-                    ]
-                    req_body = {
-                        "to": one_id,
-                        "bot_id": self.onechatbot_id,
-                        "message": str(return_device),
-                        "quick_reply": payload
-                    }
-                    print(TAG, "payload=", payload)
-                    print(TAG, "received_msg=", received_msg)
-                    r = requests.post(self.onechat_url1, json=req_body,
+
+                    reply_message = str(return_device)
+                    send_reply_message = self.send_quick_reply_manage(
+                        one_id, received_msg, reply_message)
+                    r = requests.post(self.onechat_url1, json=send_reply_message,
                                       headers=self.sendmessage_headers, verify=False)
                     return r
-                    # sendmessage_body = {
-                    #     "to": one_id,
-                    #     "bot_id": self.onechatbot_id,
-                    #     "type": "text",
-                    #     "message": str(return_device),
-                    #     "custom_notification": "ตอบกลับข้อความคุณครับ"
-                    # }
-                    # sendmessage = requests.post(
-                    #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-                    # return sendmessage
 
                 elif ((received_msg == 'เพิ่มอุปกรณ์')):
-                    # self.addDevice_flg = True
-                    # print("adddevice_flg: " + str(self.addDevice_flg))
-                    # add_device_flg = True
-                    # letters = string.ascii_letters
-                    # device_id = ''.join(random.choice(letters)
-                    #                     for i in range(10))
-                    # secret_key = ''.join(random.choice(letters)
-                    #                      for i in range(30))
-                    # device_token = secrets.token_urlsafe()
-                    # print(
-                    #     device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-                    # print(
-                    #     secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-                    # print(
-                    #     device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
-
-                    # create_device = self.add_new_device(
-                    #     device_id, "name", secret_key, device_token, one_id)
-                    # print("create_devicecreate_devicecreate_device : " + create_device)
                     self.update_status(1, 0, 0, 0, 0, 0)
-
                     sendmessage_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
@@ -236,70 +182,14 @@ class Webhook(Resource):
                     r = requests.post(self.onechat_url1, json=req_body,
                                       headers=self.sendmessage_headers, verify=False)
                     return r
-                    # sendmessage_body = {
-                    #     "to": one_id,
-                    #     "bot_id": self.onechatbot_id,
-                    #     "type": "text",
-                    #     "message": "กรุณาเลือกอุปกรณ์ที่ต้องการลบ",
-                    #     "custom_notification": "ตอบกลับข้อความคุณครับ"
-                    # }
-                    # sendmessage = requests.post(
-                    #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-                    # return sendmessage
 
                 else:
-                    payload = [
-                        {
-                            "label": "อุปกรณ์ทั้งหมด",
-                            "type": "text",
-                            "message": "อุปกรณ์ทั้งหมด",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "เพิ่มอุปกรณ์",
-                            "type": "text",
-                            "message": "เพิ่มอุปกรณ์",
-                            "payload": "manage_my_device"
-                        },
-                        {
-                            "label": "ลบอุปกรณ์",
-                            "type": "text",
-                            "message": "ลบอุปกรณ์",
-                            "payload": "manage_my_device"
-                        }
-                    ]
-                    req_body = {
-                        "to": one_id,
-                        "bot_id": self.onechatbot_id,
-                        "message": "",
-                        "quick_reply": payload
-                    }
-                    print(TAG, "payload=", payload)
-                    print(TAG, "received_msg=", received_msg)
-                    r = requests.post(self.onechat_url1, json=req_body,
+                    reply_message = ""
+                    send_reply_message = self.send_quick_reply_manage(
+                        one_id, received_msg, reply_message)
+                    r = requests.post(self.onechat_url1, json=send_reply_message,
                                       headers=self.sendmessage_headers, verify=False)
                     return r
-
-            # else:
-            #     if (add_flg == 1):
-            #         letters = string.ascii_letters
-            #         device_id = ''.join(random.choice(letters)
-            #                             for i in range(10))
-            #         secret_key = ''.join(random.choice(letters)
-            #                              for i in range(30))
-            #         device_token = secrets.token_urlsafe()
-            #         print(
-            #             device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-            #         print(
-            #             secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-            #         print(
-            #             device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
-
-            #         create_device = self.add_new_device(
-            #             device_id, received_msg, secret_key, device_token, one_id)
-            #         self.update_status(0, 0, 0, 0, 0, 0)
-            #         print("create_devicecreate_devicecreate_device : " + create_device)
-            #         return "success"
 
         else:
             for item in devices[0]['result']:
@@ -985,6 +875,16 @@ class Webhook(Resource):
         print(TAG, "add  new device in my devices")
         sql = """INSERT INTO devices (device_id, device_name, secret_key, device_token, created_by) VALUES ('%s', '%s', '%s', '%s', '%s')""" % (
             device_id, device_name, secret_key, device_token, one_id)
+        # print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
+        # insert = database.insertData(sql)
+        # return insert
+        return sql
+
+    def delete_device(self, device_name):
+        TAG = "delete_device:"
+        database = Database()
+        sql = """DELETE FROM `devices` WHERE devices.device_name = '%s')""" % (
+            device_name)
         # print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
         # insert = database.insertData(sql)
         # return insert
