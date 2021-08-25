@@ -88,6 +88,7 @@ class Webhook(Resource):
                     return r
 
                 elif (received_msg == 'ยกเลิก'):
+                    self.update_status(0, 0, 0, 0, 0, 0)
                     reply_message = ""
                     send_reply_message = self.send_quick_reply_manage(
                         one_id, received_msg, reply_message)
