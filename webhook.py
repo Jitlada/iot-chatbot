@@ -259,7 +259,8 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-                if((received_msg == item['device_name']) or (received_msg == 'แก้ไขอุปกรณ์')):
+                # if((received_msg == item['device_name']) or (received_msg == 'แก้ไขอุปกรณ์')):
+                if((received_msg == 'แก้ไขอุปกรณ์')):
                     if(received_msg == 'แก้ไขอุปกรณ์'):
                         all_devices = self.get_device(one_id)
                         print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " +
@@ -378,26 +379,8 @@ class Webhook(Resource):
                         #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                         # return sendmessage
 
-                    elif (received_msg == 'เพิ่มอุปกรณ์'):
-                        letters = string.ascii_letters
-                        device_id = ''.join(random.choice(letters)
-                                            for i in range(10))
-                        secret_key = ''.join(random.choice(letters)
-                                             for i in range(30))
-                        device_token = secrets.token_urlsafe()
-
-                        print(
-                            device_id + " : device_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_iddevice_id")
-                        print(
-                            secret_key + " : secret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_keysecret_key")
-                        print(
-                            device_token + " : device_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_tokendevice_token")
-
-                        create_device = self.add_new_device(
-                            device_id, "name", secret_key, device_token, one_id)
-                        print(
-                            "create_devicecreate_devicecreate_device : " + create_device)
-
+                    elif ((received_msg == 'เพิ่มอุปกรณ์')):
+                        self.update_status(1, 0, 0, 0, 0, 0, "")
                         sendmessage_body = {
                             "to": one_id,
                             "bot_id": self.onechatbot_id,
@@ -407,9 +390,11 @@ class Webhook(Resource):
                         }
                         sendmessage = requests.post(
                             self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+
                         return sendmessage
 
                     elif (received_msg == 'ลบอุปกรณ์'):
+                        self.update_status(0, 0, 1, 0, 0, 0, "")
                         devices = self.get_device(one_id)
                         payload = []
                         for item in devices[0]['result']:
@@ -439,16 +424,6 @@ class Webhook(Resource):
                         r = requests.post(self.onechat_url1, json=req_body,
                                           headers=self.sendmessage_headers, verify=False)
                         return r
-                        # sendmessage_body = {
-                        #     "to": one_id,
-                        #     "bot_id": self.onechatbot_id,
-                        #     "type": "text",
-                        #     "message": "กรุณาเลือกอุปกรณ์ที่ต้องการลบ",
-                        #     "custom_notification": "ตอบกลับข้อความคุณครับ"
-                        # }
-                        # sendmessage = requests.post(
-                        #     self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
-                        # return sendmessage
 
                     else:
                         payload = [
