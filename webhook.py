@@ -122,6 +122,16 @@ class Webhook(Resource):
                                   headers=self.sendmessage_headers, verify=False)
                 return r
 
+            if (add_flg[0]['result'][0]['delete_device'] == 1):
+                if (received_msg == 'ยกเลิก'):
+                    self.update_status(0, 0, 0, 0, 0, 0)
+                    reply_message = ""
+                    send_reply_message = self.send_quick_reply_manage(
+                        one_id, received_msg, reply_message)
+                    r = requests.post(self.onechat_url1, json=send_reply_message,
+                                      headers=self.sendmessage_headers, verify=False)
+                    return r
+
             if((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                 if(received_msg == 'อุปกรณ์ทั้งหมด'):
                     all_devices = self.get_device(one_id)
@@ -153,6 +163,7 @@ class Webhook(Resource):
                     return sendmessage
 
                 elif (received_msg == 'ลบอุปกรณ์'):
+                    self.update_status(0, 0, 1, 0, 0, 0)
                     devices = self.get_device(one_id)
                     payload = []
                     for item in devices[0]['result']:
@@ -183,13 +194,13 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-                else:
-                    reply_message = ""
-                    send_reply_message = self.send_quick_reply_manage(
-                        one_id, received_msg, reply_message)
-                    r = requests.post(self.onechat_url1, json=send_reply_message,
-                                      headers=self.sendmessage_headers, verify=False)
-                    return r
+            else:
+                reply_message = ""
+                send_reply_message = self.send_quick_reply_manage(
+                    one_id, received_msg, reply_message)
+                r = requests.post(self.onechat_url1, json=send_reply_message,
+                                  headers=self.sendmessage_headers, verify=False)
+                return r
 
         else:
             for item in devices[0]['result']:
