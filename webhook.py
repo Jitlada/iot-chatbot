@@ -56,9 +56,9 @@ class Webhook(Resource):
         count = 0
 
         add_flg = self.readaddStatus()
-        print("add_flg : "+str(add_flg))
-        print("add_flg : "+str(add_flg[0]['result']))
         print("add_flg : "+str(add_flg[0]['result'][0]['add_device']))
+        del_flg = self.readdeleteStatus()
+        print("del_flg : "+str(del_flg[0]['result'][0]['delete_device']))
         # delete_flg = readdeleteStatus();
         # edit_flg = readeditStatus();
 
@@ -122,7 +122,7 @@ class Webhook(Resource):
                                   headers=self.sendmessage_headers, verify=False)
                 return r
 
-            if (add_flg[0]['result'][0]['delete_device'] == 1):
+            if (del_flg[0]['result'][0]['delete_device'] == 1):
                 if (received_msg == 'ยกเลิก'):
                     self.update_status(0, 0, 0, 0, 0, 0)
                     reply_message = ""
@@ -677,6 +677,14 @@ class Webhook(Resource):
         print("readaddStatus")
         database = Database()
         sql = """SELECT status_message.add_device FROM status_message"""
+        message = database.getData(sql)
+        print("message: " + str(message))
+        return message
+
+    def readdeleteStatus(self):
+        print("readdeleteStatus")
+        database = Database()
+        sql = """SELECT status_message.delete_device FROM status_message"""
         message = database.getData(sql)
         print("message: " + str(message))
         return message
