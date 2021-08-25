@@ -894,20 +894,20 @@ class Webhook(Resource):
         print(TAG, "add  new device in my devices")
         sql = """INSERT INTO devices (device_id, device_name, secret_key, device_token, created_by) VALUES ('%s', '%s', '%s', '%s', '%s')""" % (
             device_id, device_name, secret_key, device_token, one_id)
-        # print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
-        # insert = database.insertData(sql)
-        # return insert
-        return sql
+        print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
+        insert = database.insertData(sql)
+        return insert
+        # return sql
 
     def delete_device(self, device_name):
         TAG = "delete_device:"
         database = Database()
         sql = """DELETE FROM `devices` WHERE devices.device_name = '%s')""" % (
             device_name)
-        # print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
-        # insert = database.insertData(sql)
-        # return insert
-        return sql
+        print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
+        insert = database.insertData(sql)
+        return insert
+        # return sql
 
     def set_status_message(self):
         TAG = "set_status_message:"
