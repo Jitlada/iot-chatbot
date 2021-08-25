@@ -194,13 +194,13 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-            else:
-                reply_message = ""
-                send_reply_message = self.send_quick_reply_manage(
-                    one_id, received_msg, reply_message)
-                r = requests.post(self.onechat_url1, json=send_reply_message,
-                                  headers=self.sendmessage_headers, verify=False)
-                return r
+                else:
+                    reply_message = ""
+                    send_reply_message = self.send_quick_reply_manage(
+                        one_id, received_msg, reply_message)
+                    r = requests.post(self.onechat_url1, json=send_reply_message,
+                                      headers=self.sendmessage_headers, verify=False)
+                    return r
 
         else:
             for item in devices[0]['result']:
