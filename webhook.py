@@ -314,42 +314,9 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-                if(((received_msg == item['device_name']) and del_flg[0]['result'][0]['delete_device'] == 0 and add_flg[0]['result'][0]['add_device'] == 0) or (received_msg == 'แก้ไขอุปกรณ์')):
+                if(((received_msg == item['device_name']) and del_flg[0]['result'][0]['delete_device'] == 0 and add_flg[0]['result'][0]['add_device'] == 0)):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
-                    if(received_msg == 'แก้ไขอุปกรณ์'):
-                        all_devices = self.get_device(one_id)
-                        print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " +
-                              str(all_devices))
-                        return_device = all_devices[0]['result']
-                        print("return_device deviceeeeeeeeeeeeeeeeeeeeeeee : " +
-                              str(return_device))
-                        payload = [
-                            {
-                                "label": "เปลี่ยนชื่อ",
-                                "type": "text",
-                                "message": "เปลี่ยนชื่อ",
-                                "payload": "manage_my_device"
-                            },
-                            {
-                                "label": "แก้ไขเมนู",
-                                "type": "text",
-                                "message": "แก้ไขเมนู",
-                                "payload": "manage_my_device"
-                            }
-                        ]
-                        req_body = {
-                            "to": one_id,
-                            "bot_id": self.onechatbot_id,
-                            "message": "",
-                            "quick_reply": payload
-                        }
-                        print(TAG, "payload=", payload)
-                        print(TAG, "received_msg=", received_msg)
-                        r = requests.post(self.onechat_url1, json=req_body,
-                                          headers=self.sendmessage_headers, verify=False)
-                        return r
-
-                    else:
+                    if(received_msg == item['device_name']):
                         print("itemmmmmmmmmmmmmmmmmmmmmmmmmm if device_name : " +
                               item['device_name'])
                         payload = [
@@ -370,6 +337,41 @@ class Webhook(Resource):
                                 "type": "text",
                                 "message": "แก้ไขอุปกรณ์",
                                 "payload": "my_device"
+                            }
+                        ]
+                        req_body = {
+                            "to": one_id,
+                            "bot_id": self.onechatbot_id,
+                            "message": "",
+                            "quick_reply": payload
+                        }
+                        print(TAG, "payload=", payload)
+                        print(TAG, "received_msg=", received_msg)
+                        r = requests.post(self.onechat_url1, json=req_body,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
+
+                elif((received_msg == 'แก้ไขอุปกรณ์')):
+                    # if((received_msg == 'แก้ไขอุปกรณ์')):
+                    if(received_msg == 'แก้ไขอุปกรณ์'):
+                        all_devices = self.get_device(one_id)
+                        print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " +
+                              str(all_devices))
+                        return_device = all_devices[0]['result']
+                        print("return_device deviceeeeeeeeeeeeeeeeeeeeeeee : " +
+                              str(return_device))
+                        payload = [
+                            {
+                                "label": "เปลี่ยนชื่อ",
+                                "type": "text",
+                                "message": "เปลี่ยนชื่อ",
+                                "payload": "manage_my_device"
+                            },
+                            {
+                                "label": "แก้ไขเมนู",
+                                "type": "text",
+                                "message": "แก้ไขเมนู",
+                                "payload": "manage_my_device"
                             }
                         ]
                         req_body = {
