@@ -259,6 +259,61 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
+                if (add_flg[0]['result'][0]['add_device'] == 1):
+                    self.update_status(1, 0, 0, 0, 0, 0, received_msg)
+                    if (received_msg == 'ตกลง'):
+                        letters = string.ascii_letters
+                        device_id = ''.join(random.choice(letters)
+                                            for i in range(10))
+                        secret_key = ''.join(random.choice(letters)
+                                             for i in range(30))
+                        device_token = secrets.token_urlsafe()
+                        create_device = self.add_new_device(
+                            device_id, device_name_flg[0]['result'][0]['device_name_msg'], secret_key, device_token, one_id)
+                        self.update_status(0, 0, 0, 0, 0, 0, "")
+
+                        reply_message = "เพิ่มอุปกรณ์สำเร็จ"
+                        send_reply_message = self.send_quick_reply_manage(
+                            one_id, received_msg, reply_message)
+                        r = requests.post(self.onechat_url1, json=send_reply_message,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
+
+                    elif (received_msg == 'ยกเลิก'):
+                        self.update_status(0, 0, 0, 0, 0, 0, "")
+                        reply_message = ""
+                        send_reply_message = self.send_quick_reply_manage(
+                            one_id, received_msg, reply_message)
+                        r = requests.post(self.onechat_url1, json=send_reply_message,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
+
+                    payload = [
+                        {
+                            "label": "ตกลง",
+                            "type": "text",
+                            "message": "ตกลง",
+                            "payload": "manage_my_device"
+                        },
+                        {
+                            "label": "ยกเลิก",
+                            "type": "text",
+                            "message": "ยกเลิก",
+                            "payload": "manage_my_device"
+                        }
+                    ]
+                    req_body = {
+                        "to": one_id,
+                        "bot_id": self.onechatbot_id,
+                        "message": "กรุณายืนยันการเพิ่มอุปกรณ์",
+                        "quick_reply": payload
+                    }
+                    print(TAG, "payload=", payload)
+                    print(TAG, "received_msg=", received_msg)
+                    r = requests.post(self.onechat_url1, json=req_body,
+                                      headers=self.sendmessage_headers, verify=False)
+                    return r
+
                 if(((received_msg == item['device_name']) and del_flg[0]['result'][0]['delete_device'] == 0 and add_flg[0]['result'][0]['add_device'] == 0) or (received_msg == 'แก้ไขอุปกรณ์')):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
                     if(received_msg == 'แก้ไขอุปกรณ์'):
