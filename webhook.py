@@ -62,6 +62,12 @@ class Webhook(Resource):
         device_name_flg = self.readdeviceNameStatus()
         print("device_name_flg : " +
               device_name_flg[0]['result'][0]['device_name_msg'])
+        change_name_flg = self.readchangeNameStatus()
+        print("change_name_flg : " +
+              str(change_name_flg[0]['result'][0]['change_name']))
+        new_name_flg = self.readnewNameStatus()
+        print("new_name_flg : " +
+              new_name_flg[0]['result'][0]['new_device_name'])
         # delete_flg = readdeleteStatus();
         # edit_flg = readeditStatus();
 
@@ -314,9 +320,63 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
+                if (change_name_flg[0]['result'][0]['change_name'] == 1):
+                    self.update_new_name_status(received_msg)
+                    if (received_msg == 'ตกลง'):
+                        self.update_device(
+                            new_name_flg[0]['result'][0]['new_device_name'], device_name_flg[0]['result'][0]['device_name_msg'])
+                        self.update_status(0, 0, 0, 0, 0, 0, "")
+                        self.update_change_name_status(0)
+                        self.update_new_name_status("")
+
+                        reply_message = "เพิ่มอุปกรณ์สำเร็จ"
+                        send_reply_message = self.send_quick_reply_manage(
+                            one_id, received_msg, reply_message)
+                        r = requests.post(self.onechat_url1, json=send_reply_message,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
+
+                    elif (received_msg == 'ยกเลิก'):
+                        self.update_status(0, 0, 0, 0, 0, 0, "")
+                        self.update_change_name_status(0)
+                        self.update_new_name_status("")
+                        reply_message = ""
+                        send_reply_message = self.send_quick_reply_manage(
+                            one_id, received_msg, reply_message)
+                        r = requests.post(self.onechat_url1, json=send_reply_message,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
+
+                    payload = [
+                        {
+                            "label": "ตกลง",
+                            "type": "text",
+                            "message": "ตกลง",
+                            "payload": "manage_my_device"
+                        },
+                        {
+                            "label": "ยกเลิก",
+                            "type": "text",
+                            "message": "ยกเลิก",
+                            "payload": "manage_my_device"
+                        }
+                    ]
+                    req_body = {
+                        "to": one_id,
+                        "bot_id": self.onechatbot_id,
+                        "message": "กรุณายืนยันการเปลี่ยนชื่อ",
+                        "quick_reply": payload
+                    }
+                    print(TAG, "payload=", payload)
+                    print(TAG, "received_msg=", received_msg)
+                    r = requests.post(self.onechat_url1, json=req_body,
+                                      headers=self.sendmessage_headers, verify=False)
+                    return r
+
                 if(((received_msg == item['device_name']) and del_flg[0]['result'][0]['delete_device'] == 0 and add_flg[0]['result'][0]['add_device'] == 0)):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
                     if(received_msg == item['device_name']):
+                        self.update_status(0, 0, 0, 0, 0, 0, received_msg)
                         print("itemmmmmmmmmmmmmmmmmmmmmmmmmm if device_name : " +
                               item['device_name'])
                         payload = [
@@ -351,9 +411,9 @@ class Webhook(Resource):
                                           headers=self.sendmessage_headers, verify=False)
                         return r
 
-                elif((received_msg == 'แก้ไขอุปกรณ์')):
+                elif((received_msg == 'แก้ไขอุปกรณ์') or (received_msg == 'เปลี่ยนชื่อ') or (received_msg == 'แก้ไขเมนู')):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
-                    if(received_msg == 'แก้ไขอุปกรณ์'):
+                    if((received_msg == 'แก้ไขอุปกรณ์')):
                         all_devices = self.get_device(one_id)
                         print("all deviceeeeeeeeeeeeeeeeeeeeeeee : " +
                               str(all_devices))
@@ -385,6 +445,19 @@ class Webhook(Resource):
                         r = requests.post(self.onechat_url1, json=req_body,
                                           headers=self.sendmessage_headers, verify=False)
                         return r
+
+                    elif((received_msg == 'เปลี่ยนชื่อ')):
+                        self.update_change_name_status(1)
+                        sendmessage_body = {
+                            "to": one_id,
+                            "bot_id": self.onechatbot_id,
+                            "type": "text",
+                            "message": "กรุณาพิมพ์ชื่ออุปกรณ์ที่ต้องการเปลี่ยน",
+                            "custom_notification": "ตอบกลับข้อความคุณครับ"
+                        }
+                        sendmessage = requests.post(
+                            self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
+                        return sendmessage
 
                 elif((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                     if(received_msg == 'อุปกรณ์ทั้งหมด'):
@@ -747,6 +820,22 @@ class Webhook(Resource):
         print("message: " + str(message))
         return message
 
+    def readchangeNameStatus(self):
+        print("readchangeNameStatus")
+        database = Database()
+        sql = """SELECT status_message.change_name FROM status_message"""
+        message = database.getData(sql)
+        print("message: " + str(message))
+        return message
+
+    def readnewNameStatus(self):
+        print("readnewNameStatus")
+        database = Database()
+        sql = """SELECT status_message.new_device_name FROM status_message"""
+        message = database.getData(sql)
+        print("message: " + str(message))
+        return message
+
     def get_onechat_token(self, auth):
         TAG = "get_onechat_token:"
         module = Module()
@@ -967,6 +1056,14 @@ class Webhook(Resource):
         return insert
         # return sql
 
+    def update_device(self, new_device_n, old_device_n):
+        TAG = "update_device:"
+        database = Database()
+        sql = """UPDATE `devices` SET `device_name`='%s' WHERE `device_name`='%s' """ % (
+            new_device_n, old_device_n)
+        update = database.insertData(sql)
+        return update
+
     def set_status_message(self):
         TAG = "set_status_message:"
         database = Database()
@@ -979,8 +1076,24 @@ class Webhook(Resource):
         database = Database()
         sql = """UPDATE `status_message` SET add_device='%s', edit_device='%s', delete_device='%s', add_menu='%s', edit_menu='%s', delete_menu='%s', device_name_msg='%s' """ % (
             add_d, edt_d, del_d, add_m, edt_m, del_m, device_n_msg)
-        insert = database.insertData(sql)
-        return insert
+        update = database.insertData(sql)
+        return update
+
+    def update_change_name_status(self, device_n_msg):
+        TAG = "update_change_name_status:"
+        database = Database()
+        sql = """UPDATE `status_message` SET `change_name`='%s' """ % (
+            device_n_msg)
+        update = database.insertData(sql)
+        return update
+
+    def update_new_name_status(self, new_device_n):
+        TAG = "update_new_name_status:"
+        database = Database()
+        sql = """UPDATE `status_message` SET `new_device_name`='%s' """ % (
+            new_device_n)
+        update = database.insertData(sql)
+        return update
 
     def post(self):
         TAG = "Webhook:"
