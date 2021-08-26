@@ -329,31 +329,35 @@ class Webhook(Resource):
                         self.update_change_name_status(0)
                         self.update_new_name_status("")
 
-                        # payload_start.append({
-                        #     "label": "จัดการอุปกรณ์",
-                        #     "type": "text",
-                        #             "message": "จัดการอุปกรณ์",
-                        #             "payload": "my_devices"
-                        # })
+                        devices = self.get_device(one_id)
+                        payload = []
+                        for item in devices[0]['result']:
+                            payload.append(
+                                {
+                                    "label": item['device_name'],
+                                    "type": "text",
+                                    "message": item['device_name'],
+                                    "payload": "my_devices"
+                                }
+                            )
 
-                        req_body = {
-                            "to": one_id,
-                            "bot_id": self.onechatbot_id,
-                            "message": "เปลี่ยนชื่อสำเร็จ",
-                            "quick_reply": payload_start
-                        }
-                        print(TAG, "payload=", payload_start)
-                        print(TAG, "received_msg=", received_msg)
-                        r = requests.post(self.onechat_url1, json=req_body,
-                                          headers=self.sendmessage_headers, verify=False)
-                        return r
-
-                        # reply_message = "เปลี่ยนชื่อสำเร็จ"
-                        # send_reply_message = self.send_quick_reply_manage(
-                        #     one_id, received_msg, reply_message)
-                        # r = requests.post(self.onechat_url1, json=send_reply_message,
-                        #                   headers=self.sendmessage_headers, verify=False)
-                        # return r
+                            payload.append({
+                                "label": "จัดการอุปกรณ์",
+                                "type": "text",
+                                "message": "จัดการอุปกรณ์",
+                                "payload": "my_devices"
+                            })
+                            req_body = {
+                                "to": one_id,
+                                "bot_id": self.onechatbot_id,
+                                "message": "เปลี่ยนชื่อสำเร็จ",
+                                "quick_reply": payload
+                            }
+                            print(TAG, "payload=", payload)
+                            print(TAG, "received_msg=", received_msg)
+                            r = requests.post(self.onechat_url1, json=req_body,
+                                              headers=self.sendmessage_headers, verify=False)
+                            return r
 
                     elif (received_msg == 'ยกเลิก'):
                         self.update_status(0, 0, 0, 0, 0, 0, "")
