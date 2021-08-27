@@ -428,9 +428,14 @@ class Webhook(Resource):
                             device_id[0]['result'][0]['device_id'])
                         menu_id = self.find_menu_permission(
                             device_id[0]['result'][0]['device_id'])
+                        print("device_id : " +
+                              device_id[0]['result'][0]['device_id'])
                         payload = []
                         for item in menu_id[0]['result']:
+                            print("item : " + item['menu_id'])
                             menu_name = self.find_menu_name(item['menu_id'])
+                            print("menu_name : " +
+                                  menu_name[0]['result'][0]['label'])
                             payload.append(
                                 {
                                     "label": menu_name[0]['result'][0]['label'],
