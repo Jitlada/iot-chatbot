@@ -430,7 +430,7 @@ class Webhook(Resource):
                             device_id[0]['result'][0]['device_id'])
                         print("device_id : " +
                               device_id[0]['result'][0]['device_id'])
-                        print("menu_idmenu_idmenu_idmenu_idmenu_id : " + menu_id)
+                        print("menu_idmenu_idmenu_idmenu_idmenu_id : " + str(menu_id))
                         payload = []
                         for item in menu_id[0]['result']:
                             print("item : " + item['menu_id'])
