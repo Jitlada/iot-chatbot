@@ -423,39 +423,71 @@ class Webhook(Resource):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
                     if(received_msg == item['device_name']):
                         self.update_status(0, 0, 0, 0, 0, 0, received_msg)
-                        print("itemmmmmmmmmmmmmmmmmmmmmmmmmm if device_name : " +
-                              item['device_name'])
-                        payload = [
-                            {
-                                "label": "เปิด",
-                                "type": "text",
-                                "message": "เปิด",
-                                "payload": "my_device"
-                            },
-                            {
-                                "label": "ปิด",
-                                "type": "text",
-                                "message": "ปิด",
-                                "payload": "my_device"
-                            },
-                            {
+                        device_id = self.find_device_id(received_msg)
+                        self.update_device_id_status(
+                            device_id[0]['result'][0]['device_id'])
+                        menu_id = self.find_menu_permission(
+                            device_id[0]['result'][0]['device_id'])
+                        payload = []
+                        for item in menu_id[0]['result']:
+                            menu_name = self.find_menu_name(item['menu_id'])
+                            payload.append(
+                                {
+                                    "label": menu_name[0]['result'][0]['label'],
+                                    "type": "text",
+                                    "message": menu_name[0]['result'][0]['label'],
+                                    "payload": "my_devices"
+                                }
+                            )
+
+                            payload.append({
                                 "label": "แก้ไขอุปกรณ์",
                                 "type": "text",
                                 "message": "แก้ไขอุปกรณ์",
                                 "payload": "my_device"
+                            })
+                            req_body = {
+                                "to": one_id,
+                                "bot_id": self.onechatbot_id,
+                                "message": "",
+                                "quick_reply": payload
                             }
-                        ]
-                        req_body = {
-                            "to": one_id,
-                            "bot_id": self.onechatbot_id,
-                            "message": "",
-                            "quick_reply": payload
-                        }
-                        print(TAG, "payload=", payload)
-                        print(TAG, "received_msg=", received_msg)
-                        r = requests.post(self.onechat_url1, json=req_body,
-                                          headers=self.sendmessage_headers, verify=False)
-                        return r
+                            print(TAG, "payload=", payload)
+                            print(TAG, "received_msg=", received_msg)
+                            r = requests.post(self.onechat_url1, json=req_body,
+                                              headers=self.sendmessage_headers, verify=False)
+                            return r
+                        # payload = [
+                        #     {
+                        #         "label": "เปิด",
+                        #         "type": "text",
+                        #         "message": "เปิด",
+                        #         "payload": "my_device"
+                        #     },
+                        #     {
+                        #         "label": "ปิด",
+                        #         "type": "text",
+                        #         "message": "ปิด",
+                        #         "payload": "my_device"
+                        #     },
+                        #     {
+                        #         "label": "แก้ไขอุปกรณ์",
+                        #         "type": "text",
+                        #         "message": "แก้ไขอุปกรณ์",
+                        #         "payload": "my_device"
+                        #     }
+                        # ]
+                        # req_body = {
+                        #     "to": one_id,
+                        #     "bot_id": self.onechatbot_id,
+                        #     "message": "",
+                        #     "quick_reply": payload
+                        # }
+                        # print(TAG, "payload=", payload)
+                        # print(TAG, "received_msg=", received_msg)
+                        # r = requests.post(self.onechat_url1, json=req_body,
+                        #                   headers=self.sendmessage_headers, verify=False)
+                        # return r
 
                 elif((received_msg == 'แก้ไขอุปกรณ์') or (received_msg == 'เปลี่ยนชื่อ') or (received_msg == 'แก้ไขเมนู')):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
@@ -1069,6 +1101,33 @@ class Webhook(Resource):
         # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
         return action_res
 
+    def find_device_id(self, device_n):
+        TAG = "find_device_id:"
+        database = Database()
+        cmd = """SELECT devices.device_id FROM `devices` WHERE device_name='%s'""" % (
+            device_n)
+        device_id = database.getData(cmd)
+        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
+        return device_id
+
+    def find_menu_permission(self, device_id):
+        TAG = "find_menu_permission:"
+        database = Database()
+        cmd = """SELECT permissions.menu_id FROM `permissions` WHERE device_id='%s'""" % (
+            device_id)
+        menu_id = database.getData(cmd)
+        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
+        return menu_id
+
+    def find_menu_name(self, menu_id):
+        TAG = "find_menu_name:"
+        database = Database()
+        cmd = """SELECT menu.label FROM `menu` WHERE menu_id='%s'""" % (
+            menu_id)
+        menu_name = database.getData(cmd)
+        # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
+        return menu_name
+
     # def check_action(self, one_id):
     #     TAG = "check_action:"
     #     database = Database()
@@ -1138,6 +1197,14 @@ class Webhook(Resource):
         database = Database()
         sql = """UPDATE `status_message` SET `new_device_name`='%s' """ % (
             new_device_n)
+        update = database.insertData(sql)
+        return update
+
+    def update_device_id_status(self, device_id):
+        TAG = "update_device_name_status:"
+        database = Database()
+        sql = """UPDATE `status_message` SET `device_id`='%s' """ % (
+            device_id)
         update = database.insertData(sql)
         return update
 
