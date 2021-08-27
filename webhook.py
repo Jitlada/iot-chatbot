@@ -432,20 +432,7 @@ class Webhook(Resource):
                               device_id[0]['result'][0]['device_id'])
                         print("menu_idmenu_idmenu_idmenu_idmenu_id : " + str(menu_id))
                         payload = []
-                        for item in menu_id[0]['result']:
-                            print("item : " + item['menu_id'])
-                            menu_name = self.find_menu_name(item['menu_id'])
-                            print("menu_name : " +
-                                  menu_name[0]['result'][0]['label'])
-                            payload.append(
-                                {
-                                    "label": menu_name[0]['result'][0]['label'],
-                                    "type": "text",
-                                    "message": menu_name[0]['result'][0]['label'],
-                                    "payload": "my_devices"
-                                }
-                            )
-
+                        if (menu_id[0]['len'] == 0):
                             payload.append({
                                 "label": "แก้ไขอุปกรณ์",
                                 "type": "text",
@@ -463,6 +450,40 @@ class Webhook(Resource):
                             r = requests.post(self.onechat_url1, json=req_body,
                                               headers=self.sendmessage_headers, verify=False)
                             return r
+
+                        else:
+                            for item in menu_id[0]['result']:
+                                print("item : " + item['menu_id'])
+                                menu_name = self.find_menu_name(
+                                    item['menu_id'])
+                                print("menu_name : " +
+                                      menu_name[0]['result'][0]['label'])
+                                payload.append(
+                                    {
+                                        "label": menu_name[0]['result'][0]['label'],
+                                        "type": "text",
+                                        "message": menu_name[0]['result'][0]['label'],
+                                        "payload": "my_devices"
+                                    }
+                                )
+
+                                payload.append({
+                                    "label": "แก้ไขอุปกรณ์",
+                                    "type": "text",
+                                    "message": "แก้ไขอุปกรณ์",
+                                    "payload": "my_device"
+                                })
+                                req_body = {
+                                    "to": one_id,
+                                    "bot_id": self.onechatbot_id,
+                                    "message": "",
+                                    "quick_reply": payload
+                                }
+                                print(TAG, "payload=", payload)
+                                print(TAG, "received_msg=", received_msg)
+                                r = requests.post(self.onechat_url1, json=req_body,
+                                                  headers=self.sendmessage_headers, verify=False)
+                                return r
                         # payload = [
                         #     {
                         #         "label": "เปิด",
