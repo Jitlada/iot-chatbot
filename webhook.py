@@ -566,19 +566,20 @@ class Webhook(Resource):
 
                 elif((received_msg == 'แก้ไขเมนู')):
                     if (received_msg == 'แก้ไขเมนู'):
-                        payload = []
-                        payload.append({
-                            "label": "เพิ่มเมนู",
-                            "type": "text",
-                            "message": "เพิ่มเมนู",
-                            "payload": "my_devices"
-                        },
+                        payload = [
                             {
-                            "label": "ลบเมนู",
-                            "type": "text",
-                            "message": "ลบเมนู",
-                            "payload": "my_devices"
-                        })
+                                "label": "เพิ่มเมนู",
+                                "type": "text",
+                                "message": "เพิ่มเมนู",
+                                "payload": "my_devices"
+                            },
+                            {
+                                "label": "ลบเมนู",
+                                "type": "text",
+                                "message": "ลบเมนู",
+                                "payload": "my_devices"
+                            }
+                        ]
                         req_body = {
                             "to": one_id,
                             "bot_id": self.onechatbot_id,
