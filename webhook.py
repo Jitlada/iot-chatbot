@@ -516,7 +516,7 @@ class Webhook(Resource):
                         #                   headers=self.sendmessage_headers, verify=False)
                         # return r
 
-                elif((received_msg == 'แก้ไขอุปกรณ์') or (received_msg == 'เปลี่ยนชื่อ') or (received_msg == 'แก้ไขเมนู')):
+                elif((received_msg == 'แก้ไขอุปกรณ์') or (received_msg == 'เปลี่ยนชื่อ')):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
                     if((received_msg == 'แก้ไขอุปกรณ์')):
                         all_devices = self.get_device(one_id)
@@ -563,6 +563,33 @@ class Webhook(Resource):
                         sendmessage = requests.post(
                             self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                         return sendmessage
+
+                elif((received_msg == 'แก้ไขเมนู')):
+                    if (received_msg == 'แก้ไขเมนู'):
+                        payload = []
+                        payload.append({
+                            "label": "เพิ่มเมนู",
+                            "type": "text",
+                            "message": "เพิ่มเมนู",
+                            "payload": "my_devices"
+                        },
+                            {
+                            "label": "ลบเมนู",
+                            "type": "text",
+                            "message": "ลบเมนู",
+                            "payload": "my_devices"
+                        })
+                        req_body = {
+                            "to": one_id,
+                            "bot_id": self.onechatbot_id,
+                            "message": "กรุณาเลือกเมนูที่ต้องการแก้ไข",
+                            "quick_reply": payload
+                        }
+                        print(TAG, "payload=", payload)
+                        print(TAG, "received_msg=", received_msg)
+                        r = requests.post(self.onechat_url1, json=req_body,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
 
                 elif((received_msg == 'จัดการอุปกรณ์') or (received_msg == 'อุปกรณ์ทั้งหมด') or (received_msg == 'เพิ่มอุปกรณ์') or (received_msg == 'ลบอุปกรณ์')):
                     if(received_msg == 'อุปกรณ์ทั้งหมด'):
