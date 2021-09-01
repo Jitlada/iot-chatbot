@@ -647,31 +647,102 @@ class Webhook(Resource):
                 elif((received_msg == 'แก้ไขเมนู') or (received_msg == 'เพิ่มเมนู') or (received_msg == 'ลบเมนู')):
                     self.update_edit_menu(1)
                     if (received_msg == 'แก้ไขเมนู'):
-                        payload = [
-                            {
+                        device_id = self.get_device_id_status()
+                        menu_id = self.find_menu_permission(
+                            device_id[0]['result'][0]['device_id'])
+                        print("device_id : " +
+                              device_id[0]['result'][0]['device_id'])
+                        print("menu_idmenu_idmenu_idmenu_idmenu_id : " + str(menu_id))
+                        payload = []
+                        if (menu_id[0]['len'] == 0):
+                            payload.append({
                                 "label": "เพิ่มเมนู",
                                 "type": "text",
                                 "message": "เพิ่มเมนู",
                                 "payload": "my_devices"
-                            },
-                            {
+                            })
+                            payload.append({
                                 "label": "ลบเมนู",
                                 "type": "text",
                                 "message": "ลบเมนู",
                                 "payload": "my_devices"
+                            })
+                            req_body = {
+                                "to": one_id,
+                                "bot_id": self.onechatbot_id,
+                                "message": "",
+                                "quick_reply": payload
                             }
-                        ]
-                        req_body = {
-                            "to": one_id,
-                            "bot_id": self.onechatbot_id,
-                            "message": "กรุณาเลือกเมนูที่ต้องการแก้ไข",
-                            "quick_reply": payload
-                        }
-                        print(TAG, "payload=", payload)
-                        print(TAG, "received_msg=", received_msg)
-                        r = requests.post(self.onechat_url1, json=req_body,
-                                          headers=self.sendmessage_headers, verify=False)
-                        return r
+                            print(TAG, "payload=", payload)
+                            print(TAG, "received_msg=", received_msg)
+                            r = requests.post(self.onechat_url1, json=req_body,
+                                              headers=self.sendmessage_headers, verify=False)
+                            return r
+
+                        else:
+                            for item in menu_id[0]['result']:
+                                print("item : " + item['menu_id'])
+                                menu_name = self.find_menu_name(
+                                    item['menu_id'])
+                                print("menu_name : " +
+                                      menu_name[0]['result'][0]['label'])
+                                payload.append(
+                                    {
+                                        "label": menu_name[0]['result'][0]['label'],
+                                        "type": "text",
+                                        "message": menu_name[0]['result'][0]['label'],
+                                        "payload": "my_devices"
+                                    }
+                                )
+
+                                payload.append({
+                                    "label": "เพิ่มเมนู",
+                                    "type": "text",
+                                    "message": "เพิ่มเมนู",
+                                    "payload": "my_devices"
+                                })
+                                payload.append({
+                                    "label": "ลบเมนู",
+                                    "type": "text",
+                                    "message": "ลบเมนู",
+                                    "payload": "my_devices"
+                                })
+                                req_body = {
+                                    "to": one_id,
+                                    "bot_id": self.onechatbot_id,
+                                    "message": "",
+                                    "quick_reply": payload
+                                }
+                                print(TAG, "payload=", payload)
+                                print(TAG, "received_msg=", received_msg)
+                                r = requests.post(self.onechat_url1, json=req_body,
+                                                  headers=self.sendmessage_headers, verify=False)
+                                return r
+                        # payload = [
+                        #     {
+                        #         "label": "เพิ่มเมนู",
+                        #         "type": "text",
+                        #         "message": "เพิ่มเมนู",
+                        #         "payload": "my_devices"
+                        #     },
+                        #     {
+                        #         "label": "ลบเมนู",
+                        #         "type": "text",
+                        #         "message": "ลบเมนู",
+                        #         "payload": "my_devices"
+                        #     }
+                        # ]
+                        # req_body = {
+                        #     "to": one_id,
+                        #     "bot_id": self.onechatbot_id,
+                        #     "message": "กรุณาเลือกเมนูที่ต้องการแก้ไข",
+                        #     "quick_reply": payload
+                        # }
+                        # print(TAG, "payload=", payload)
+                        # print(TAG, "received_msg=", received_msg)
+                        # r = requests.post(self.onechat_url1, json=req_body,
+                        #                   headers=self.sendmessage_headers, verify=False)
+                        # return r
 
                     elif (received_msg == 'เพิ่มเมนู'):
                         self.update_add_menu(1)
