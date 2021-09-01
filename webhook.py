@@ -483,10 +483,10 @@ class Webhook(Resource):
                               str(find_menu_id))
                         self.add_new_permission(
                             device_id[0]['result'][0]['device_id'], one_id, "rwx", find_menu_id[0]['result'][0]['menu_id'])
-                        self.update_status(0, 0, 0, 0, 0, 0, "")
+
+                        self.update_add_menu(0)
                         self.update_new_name_status("")
                         self.update_edit_menu(0)
-                        self.update_device_id_status("")
                         self.update_command_menu("")
 
                         device_id_s = self.get_device_id_status()
@@ -550,7 +550,7 @@ class Webhook(Resource):
                                 return r
 
                     elif (received_msg == 'ยกเลิก'):
-                        self.update_add_menu(1)
+                        self.update_add_menu(0)
                         self.update_new_name_status("")
                         self.update_edit_menu(0)
                         self.update_command_menu("")
