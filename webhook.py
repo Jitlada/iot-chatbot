@@ -478,7 +478,7 @@ class Webhook(Resource):
                                                      ['result'][0]['new_device_name'], name_payload_status[0]['result'][0]['command_menu'])
                         device_id = self.get_device_id_status()
                         print("new_menunew_menunew_menunew_menunew_menu : " +
-                              str(new_menu[0]['result'][0]['menu_id']))
+                              str(new_menu))
                         # self.add_new_permission(
                         #     device_id[0]['result'][0]['device_id'], one_id, "rwx", new_menu[0]['result'][0]['menu_id'])
                         self.update_status(0, 0, 0, 0, 0, 0, "")
