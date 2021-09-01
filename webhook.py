@@ -476,9 +476,11 @@ class Webhook(Resource):
                         name_payload_status = self.get_name_menu_status()
                         new_menu = self.add_new_menu(name_payload_status[0]['result'][0]['new_device_name'], name_payload_status[0]
                                                      ['result'][0]['new_device_name'], name_payload_status[0]['result'][0]['command_menu'])
+                        find_menu_id = self.find_menu_id(
+                            name_payload_status[0]['result'][0]['new_device_name'])
                         device_id = self.get_device_id_status()
                         print("new_menunew_menunew_menunew_menunew_menu : " +
-                              str(new_menu))
+                              str(find_menu_id))
                         # self.add_new_permission(
                         #     device_id[0]['result'][0]['device_id'], one_id, "rwx", new_menu[0]['result'][0]['menu_id'])
                         self.update_status(0, 0, 0, 0, 0, 0, "")
@@ -487,12 +489,65 @@ class Webhook(Resource):
                         self.update_device_id_status("")
                         self.update_command_menu("")
 
-                        reply_message = "เพิ่มเมนูสำเร็จ"
-                        send_reply_message = self.send_quick_reply_manage(
-                            one_id, received_msg, reply_message)
-                        r = requests.post(self.onechat_url1, json=send_reply_message,
-                                          headers=self.sendmessage_headers, verify=False)
-                        return r
+                        device_id_s = self.get_device_id_status()
+                        menu_id = self.find_menu_permission(
+                            device_id_s[0]['result'][0]['device_id'])
+                        print("device_id : " +
+                              device_id[0]['result'][0]['device_id'])
+                        print("menu_idmenu_idmenu_idmenu_idmenu_id : " + str(menu_id))
+                        payload = []
+                        if (menu_id[0]['len'] == 0):
+                            payload.append({
+                                "label": "แก้ไขอุปกรณ์",
+                                "type": "text",
+                                "message": "แก้ไขอุปกรณ์",
+                                "payload": "my_device"
+                            })
+                            req_body = {
+                                "to": one_id,
+                                "bot_id": self.onechatbot_id,
+                                "message": "",
+                                "quick_reply": payload
+                            }
+                            print(TAG, "payload=", payload)
+                            print(TAG, "received_msg=", received_msg)
+                            r = requests.post(self.onechat_url1, json=req_body,
+                                              headers=self.sendmessage_headers, verify=False)
+                            return r
+
+                        else:
+                            for item in menu_id[0]['result']:
+                                print("item : " + item['menu_id'])
+                                menu_name = self.find_menu_name(
+                                    item['menu_id'])
+                                print("menu_name : " +
+                                      menu_name[0]['result'][0]['label'])
+                                payload.append(
+                                    {
+                                        "label": menu_name[0]['result'][0]['label'],
+                                        "type": "text",
+                                        "message": menu_name[0]['result'][0]['label'],
+                                        "payload": "my_devices"
+                                    }
+                                )
+
+                                payload.append({
+                                    "label": "แก้ไขอุปกรณ์",
+                                    "type": "text",
+                                    "message": "แก้ไขอุปกรณ์",
+                                    "payload": "my_device"
+                                })
+                                req_body = {
+                                    "to": one_id,
+                                    "bot_id": self.onechatbot_id,
+                                    "message": "เพิ่มเมนูสำเร็จ",
+                                    "quick_reply": payload
+                                }
+                                print(TAG, "payload=", payload)
+                                print(TAG, "received_msg=", received_msg)
+                                r = requests.post(self.onechat_url1, json=req_body,
+                                                  headers=self.sendmessage_headers, verify=False)
+                                return r
 
                     elif (received_msg == 'ยกเลิก'):
                         self.update_status(0, 0, 0, 0, 0, 0, "")
@@ -1467,7 +1522,6 @@ class Webhook(Resource):
     def add_new_menu(self, label_m, message_m, payload_m):
         TAG = "add_new_menu:"
         database = Database()
-        print(TAG, "add  new device in my devices")
         sql = """INSERT INTO `menu`(`label`, `message`, `action_payload`) VALUES ('%s', '%s', '%s')""" % (
             label_m, message_m, payload_m)
         print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
