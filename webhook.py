@@ -517,7 +517,7 @@ class Webhook(Resource):
 
                         else:
                             for item in menu_id[0]['result']:
-                                print("item : " + item['menu_id'])
+                                print("item : " + str(item['menu_id']))
                                 menu_name = self.find_menu_name(
                                     item['menu_id'])
                                 print("menu_name : " +
@@ -583,7 +583,7 @@ class Webhook(Resource):
 
                         else:
                             for item in menu_id[0]['result']:
-                                print("item : " + item['menu_id'])
+                                print("item : " + str(item['menu_id']))
                                 menu_name = self.find_menu_name(
                                     item['menu_id'])
                                 print("menu_name : " +
@@ -649,7 +649,7 @@ class Webhook(Resource):
 
                         else:
                             for item in menu_id[0]['result']:
-                                print("item : " + item['menu_id'])
+                                print("item : " + str(item['menu_id']))
                                 menu_name = self.find_menu_name(
                                     item['menu_id'])
                                 print("menu_name : " +
@@ -797,7 +797,7 @@ class Webhook(Resource):
 
                         else:
                             for item in menu_id[0]['result']:
-                                print("item : " + item['menu_id'])
+                                print("item : " + str(item['menu_id']))
                                 menu_name = self.find_menu_name(
                                     item['menu_id'])
                                 print("menu_name : " +
