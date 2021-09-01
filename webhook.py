@@ -558,8 +558,8 @@ class Webhook(Resource):
                         device_id_s = self.get_device_id_status()
                         menu_id = self.find_menu_permission(
                             device_id_s[0]['result'][0]['device_id'])
-                        print("device_id : " +
-                              device_id[0]['result'][0]['device_id'])
+                        print("device_id_s : " +
+                              device_id_s[0]['result'][0]['device_id'])
                         print("menu_idmenu_idmenu_idmenu_idmenu_id : " + str(menu_id))
                         payload = []
                         if (menu_id[0]['len'] == 0):
