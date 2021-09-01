@@ -75,6 +75,9 @@ class Webhook(Resource):
               str(delete_m_flg[0]['result'][0]['delete_menu']))
         edit_m_flg = self.readeditMenuStatus()
         print("edit_m_flg : "+str(edit_m_flg[0]['result'][0]['edit_menu']))
+        add__c_m_flg = self.readaddCommandMenuStatus()
+        print("add__c_m_flg : " +
+              str(add__c_m_flg[0]['result'][0]['add_command_menu']))
 
         if (devices[0]['len'] == 0):
             print("len = 0000000000000000000000000000000000")
@@ -424,9 +427,10 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-                if ((add_m_flg[0]['result'][0]['add_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1)):
+                if ((add_m_flg[0]['result'][0]['add_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
                     self.update_new_name_status(received_msg)
                     self.update_edit_menu(0)
+                    self.update_add_command_menu(1)
                     sendmessage_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
@@ -438,41 +442,9 @@ class Webhook(Resource):
                         self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                     return sendmessage
 
-                if ((add_m_flg[0]['result'][0]['add_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 0)):
+                if ((add_m_flg[0]['result'][0]['add_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 1)):
                     self.update_command_menu(received_msg)
-                    if (received_msg == 'ตกลง'):
-                        name_payload_status = self.get_name_menu_status()
-                        new_menu = self.add_new_menu(name_payload_status[0]['result'][0]['new_device_name'], name_payload_status[0]
-                                                     ['result'][0]['new_device_name'], name_payload_status[0]['result'][0]['command_menu'])
-                        device_id = self.get_device_id_status()
-                        self.add_new_permission(
-                            device_id[0]['result'][0]['device_id'], one_id, "rwx", new_menu[0]['result'][0]['menu_id'])
-                        self.update_status(0, 0, 0, 0, 0, 0, "")
-                        self.update_new_name_status("")
-                        self.update_edit_menu(0)
-                        self.update_device_id_status("")
-                        self.update_command_menu("")
-
-                        reply_message = "เพิ่มเมนูสำเร็จ"
-                        send_reply_message = self.send_quick_reply_manage(
-                            one_id, received_msg, reply_message)
-                        r = requests.post(self.onechat_url1, json=send_reply_message,
-                                          headers=self.sendmessage_headers, verify=False)
-                        return r
-
-                    elif (received_msg == 'ยกเลิก'):
-                        self.update_status(0, 0, 0, 0, 0, 0, "")
-                        self.update_new_name_status("")
-                        self.update_edit_menu(0)
-                        self.update_device_id_status("")
-                        self.update_command_menu("")
-                        reply_message = ""
-                        send_reply_message = self.send_quick_reply_manage(
-                            one_id, received_msg, reply_message)
-                        r = requests.post(self.onechat_url1, json=send_reply_message,
-                                          headers=self.sendmessage_headers, verify=False)
-                        return r
-
+                    self.update_add_command_menu(0)
                     payload = [
                         {
                             "label": "ตกลง",
@@ -498,6 +470,42 @@ class Webhook(Resource):
                     r = requests.post(self.onechat_url1, json=req_body,
                                       headers=self.sendmessage_headers, verify=False)
                     return r
+
+                if ((add_m_flg[0]['result'][0]['add_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
+                    if (received_msg == 'ตกลง'):
+                        name_payload_status = self.get_name_menu_status()
+                        new_menu = self.add_new_menu(name_payload_status[0]['result'][0]['new_device_name'], name_payload_status[0]
+                                                     ['result'][0]['new_device_name'], name_payload_status[0]['result'][0]['command_menu'])
+                        device_id = self.get_device_id_status()
+                        print("new_menunew_menunew_menunew_menunew_menu : " +
+                              str(new_menu[0]['result'][0]['menu_id']))
+                        # self.add_new_permission(
+                        #     device_id[0]['result'][0]['device_id'], one_id, "rwx", new_menu[0]['result'][0]['menu_id'])
+                        self.update_status(0, 0, 0, 0, 0, 0, "")
+                        self.update_new_name_status("")
+                        self.update_edit_menu(0)
+                        self.update_device_id_status("")
+                        self.update_command_menu("")
+
+                        reply_message = "เพิ่มเมนูสำเร็จ"
+                        send_reply_message = self.send_quick_reply_manage(
+                            one_id, received_msg, reply_message)
+                        r = requests.post(self.onechat_url1, json=send_reply_message,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
+
+                    elif (received_msg == 'ยกเลิก'):
+                        self.update_status(0, 0, 0, 0, 0, 0, "")
+                        self.update_new_name_status("")
+                        self.update_edit_menu(0)
+                        self.update_device_id_status("")
+                        self.update_command_menu("")
+                        reply_message = ""
+                        send_reply_message = self.send_quick_reply_manage(
+                            one_id, received_msg, reply_message)
+                        r = requests.post(self.onechat_url1, json=send_reply_message,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
 
                 if(((received_msg == item['device_name']) and del_flg[0]['result'][0]['delete_device'] == 0 and add_flg[0]['result'][0]['add_device'] == 0)):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
@@ -1186,6 +1194,14 @@ class Webhook(Resource):
         print("message: " + str(message))
         return message
 
+    def readaddCommandMenuStatus(self):
+        print("readaddCommandMenuStatus")
+        database = Database()
+        sql = """SELECT status_message.add_command_menu FROM status_message"""
+        message = database.getData(sql)
+        print("message: " + str(message))
+        return message
+
     def get_onechat_token(self, auth):
         TAG = "get_onechat_token:"
         module = Module()
@@ -1557,6 +1573,14 @@ class Webhook(Resource):
         TAG = "update_command_menu:"
         database = Database()
         sql = """UPDATE `status_message` SET `command_menu`='%s' """ % (cmd_m)
+        update = database.insertData(sql)
+        return update
+
+    def update_add_command_menu(self, add_c_m):
+        TAG = "update_add_command_menu:"
+        database = Database()
+        sql = """UPDATE `status_message` SET `add_command_menu`='%s' """ % (
+            add_c_m)
         update = database.insertData(sql)
         return update
 
