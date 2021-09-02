@@ -620,8 +620,9 @@ class Webhook(Resource):
                     payload = []
                     print(str(menu) +
                           " : menumenumenumenumenumenumenumenumenu in edit")
-                    # for item in menu[0]['result']:
-                    #     print("item : " + str(item['menu_id']))
+                    for item in menu[0]['result']:
+                        print("item menu_id : " + str(item['menu_id']))
+                        print("item label : " + str(item['label']))
                     #     menu_name = self.find_menu_name(
                     #         item['menu_id'])
                     #     print("menu_name : " +
