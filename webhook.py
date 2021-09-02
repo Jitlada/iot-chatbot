@@ -618,7 +618,8 @@ class Webhook(Resource):
                 if ((add_m_flg[0]['result'][0]['add_menu'] == 0) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
                     menu = self.get_menu()
                     payload = []
-                    print(menu + " : menumenumenumenumenumenumenumenumenu in edit")
+                    print(str(menu) +
+                          " : menumenumenumenumenumenumenumenumenu in edit")
                     # for item in menu[0]['result']:
                     #     print("item : " + str(item['menu_id']))
                     #     menu_name = self.find_menu_name(
