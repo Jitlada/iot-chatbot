@@ -492,8 +492,8 @@ class Webhook(Resource):
                         device_id_s = self.get_device_id_status()
                         menu_id = self.find_menu_permission(
                             device_id_s[0]['result'][0]['device_id'])
-                        print("device_id : " +
-                              device_id[0]['result'][0]['device_id'])
+                        print("device_id_s : " +
+                              device_id_s[0]['result'][0]['device_id'])
                         print("menu_idmenu_idmenu_idmenu_idmenu_id : " + str(menu_id))
                         payload = []
                         if (menu_id[0]['len'] == 0):
@@ -700,13 +700,12 @@ class Webhook(Resource):
                         self.update_menu_name("")
                         self.update_new_name_status("")
                         self.update_add_command_menu(0)
+                        self.update_command_menu("")
                         self.update_edit_menu(0)
 
                         device_id_s = self.get_device_id_status()
                         menu_id = self.find_menu_permission(
                             device_id_s[0]['result'][0]['device_id'])
-                        print("device_id : " +
-                              device_id[0]['result'][0]['device_id'])
                         print("menu_idmenu_idmenu_idmenu_idmenu_id : " + str(menu_id))
                         payload = []
                         if (menu_id[0]['len'] == 0):
