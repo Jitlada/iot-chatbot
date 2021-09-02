@@ -615,7 +615,7 @@ class Webhook(Resource):
                                                   headers=self.sendmessage_headers, verify=False)
                                 return r
 
-                if ((add_m_flg[0]['result'][0]['add_menu'] == 0) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
+                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0) and (change_name_flg[0]['result'][0]['change_name'] == 0)):
                     self.update_menu_name(received_msg)
                     self.update_change_name_status(1)
                     sendmessage_body = {
