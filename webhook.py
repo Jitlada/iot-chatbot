@@ -695,8 +695,8 @@ class Webhook(Resource):
                         self.update_menu(new_n_msg[0]['result'][0]['new_device_name'], new_n_msg[0]['result'][0]
                                          ['new_device_name'], new_n_msg[0]['result'][0]['command_menu'], old_n[0]['result'][0]['menu_name'])
 
-                        self.update_status(
-                            0, 0, 0, 0, 0, 0, new_n_msg[0]['result'][0]['new_device_name'])
+                        # self.update_status(
+                        #     0, 0, 0, 0, 0, 0, new_n_msg[0]['result'][0]['new_device_name'])
                         self.update_menu_name("")
                         self.update_new_name_status("")
                         self.update_add_command_menu(0)
