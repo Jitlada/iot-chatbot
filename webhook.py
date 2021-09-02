@@ -615,6 +615,50 @@ class Webhook(Resource):
                                                   headers=self.sendmessage_headers, verify=False)
                                 return r
 
+                if ((add_m_flg[0]['result'][0]['add_menu'] == 0) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
+                    menu = self.get_menu()
+                    payload = []
+                    print(menu + " : menumenumenumenumenumenumenumenumenu in edit")
+                    # for item in menu[0]['result']:
+                    #     print("item : " + str(item['menu_id']))
+                    #     menu_name = self.find_menu_name(
+                    #         item['menu_id'])
+                    #     print("menu_name : " +
+                    #             menu_name[0]['result'][0]['label'])
+                    #     payload.append(
+                    #         {
+                    #             "label": menu_name[0]['result'][0]['label'],
+                    #             "type": "text",
+                    #             "message": menu_name[0]['result'][0]['label'],
+                    #             "payload": "my_devices"
+                    #         }
+                    #     )
+
+                    #     payload.append({
+                    #         "label": "แก้ไขอุปกรณ์",
+                    #         "type": "text",
+                    #         "message": "แก้ไขอุปกรณ์",
+                    #         "payload": "my_device"
+                    #     })
+                    #     req_body = {
+                    #         "to": one_id,
+                    #         "bot_id": self.onechatbot_id,
+                    #         "message": "",
+                    #         "quick_reply": payload
+                    #     }
+                    #     print(TAG, "payload=", payload)
+                    #     print(TAG, "received_msg=", received_msg)
+                    #     r = requests.post(self.onechat_url1, json=req_body,
+                    #                         headers=self.sendmessage_headers, verify=False)
+                    #     return r
+                    # ต้องไปเอาเมนูทั้งหมดมาวนเช็คว่าที่ส่งมาตรงกับตัวไหน
+                    # เก็บชื่อเมนูเก่าที่ต้องการจะเปลี่ยน
+                    # ถ้าเข้ามาอีกคั้งตอนมีการรับชื่อเมนูใหม่เก็บไว้
+                    # เก็บคำสั่ง
+                    # ถ้าตกลงเมื่อไหร่ค่อยบันทึกลงตารางเมนูและpermission
+
+                    # if(received_msg == item['device_name']):
+
                 if(((received_msg == item['device_name']) and del_flg[0]['result'][0]['delete_device'] == 0 and add_flg[0]['result'][0]['add_device'] == 0)):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
                     if(received_msg == item['device_name']):
@@ -786,7 +830,7 @@ class Webhook(Resource):
                             req_body = {
                                 "to": one_id,
                                 "bot_id": self.onechatbot_id,
-                                "message": "",
+                                "message": "กรุณาเลือกเมนูที่ต้องการแก้ไข",
                                 "quick_reply": payload
                             }
                             print(TAG, "payload=", payload)
@@ -826,7 +870,7 @@ class Webhook(Resource):
                                 req_body = {
                                     "to": one_id,
                                     "bot_id": self.onechatbot_id,
-                                    "message": "",
+                                    "message": "กรุณาเลือกเมนูที่ต้องการแก้ไข",
                                     "quick_reply": payload
                                 }
                                 print(TAG, "payload=", payload)
@@ -1497,6 +1541,13 @@ class Webhook(Resource):
         # WHERE timeattendance.employee_code='%s' AND timeattendance.date=CURRENT_DATE""" %(one_id)
         return action_res
 
+    def get_menu(self):
+        TAG = "get_menu:"
+        database = Database()
+        cmd = """SELECT `menu_id`, `label` FROM `menu`"""
+        menu_res = database.getData(cmd)
+        return menu_res
+
     def find_device_id(self, device_n):
         TAG = "find_device_id:"
         database = Database()
@@ -1596,8 +1647,8 @@ class Webhook(Resource):
         sql = """DELETE FROM `devices` WHERE devices.device_name = '%s' """ % (
             device_name)
         print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
-        insert = database.insertData(sql)
-        return insert
+        delete = database.insertData(sql)
+        return delete
         # return sql
 
     def delete_menu(self, manu_name):
@@ -1605,8 +1656,17 @@ class Webhook(Resource):
         database = Database()
         sql = """DELETE FROM `menu` WHERE label = '%s' """ % (manu_name)
         print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
-        insert = database.insertData(sql)
-        return insert
+        delete = database.insertData(sql)
+        return delete
+
+    def delete_permission(self, manu_id):
+        TAG = "delete_permission:"
+        database = Database()
+        sql = """DELETE FROM `permissions` WHERE permissions.menu_id = '%s' """ % (
+            manu_id)
+        print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
+        delete = database.insertData(sql)
+        return delete
 
     def update_device(self, new_device_n, old_device_n):
         TAG = "update_device:"
