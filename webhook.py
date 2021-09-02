@@ -752,7 +752,7 @@ class Webhook(Resource):
                                 req_body = {
                                     "to": one_id,
                                     "bot_id": self.onechatbot_id,
-                                    "message": "เพิ่มเมนูสำเร็จ",
+                                    "message": "แก้ไขเมนูสำเร็จ",
                                     "quick_reply": payload
                                 }
                                 print(TAG, "payload=", payload)
@@ -764,6 +764,7 @@ class Webhook(Resource):
                         self.update_menu_name("")
                         self.update_new_name_status("")
                         self.update_add_command_menu(0)
+                        self.update_command_menu("")
                         self.update_edit_menu(0)
 
                         device_id_s = self.get_device_id_status()
