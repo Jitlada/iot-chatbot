@@ -328,7 +328,7 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-                if (change_name_flg[0]['result'][0]['change_name'] == 1):
+                if ((change_name_flg[0]['result'][0]['change_name'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
                     self.update_new_name_status(received_msg)
                     if (received_msg == 'ตกลง'):
                         self.update_device(
