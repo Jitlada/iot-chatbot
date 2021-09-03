@@ -533,23 +533,23 @@ class Webhook(Resource):
                                     }
                                 )
 
-                                payload.append({
-                                    "label": "แก้ไขอุปกรณ์",
-                                    "type": "text",
-                                    "message": "แก้ไขอุปกรณ์",
-                                    "payload": "my_device"
-                                })
-                                req_body = {
-                                    "to": one_id,
-                                    "bot_id": self.onechatbot_id,
-                                    "message": "เพิ่มเมนูสำเร็จ",
-                                    "quick_reply": payload
-                                }
-                                print(TAG, "payload=", payload)
-                                print(TAG, "received_msg=", received_msg)
-                                r = requests.post(self.onechat_url1, json=req_body,
-                                                  headers=self.sendmessage_headers, verify=False)
-                                return r
+                            payload.append({
+                                "label": "แก้ไขอุปกรณ์",
+                                "type": "text",
+                                "message": "แก้ไขอุปกรณ์",
+                                "payload": "my_device"
+                            })
+                            req_body = {
+                                "to": one_id,
+                                "bot_id": self.onechatbot_id,
+                                "message": "เพิ่มเมนูสำเร็จ",
+                                "quick_reply": payload
+                            }
+                            print(TAG, "payload=", payload)
+                            print(TAG, "received_msg=", received_msg)
+                            r = requests.post(self.onechat_url1, json=req_body,
+                                              headers=self.sendmessage_headers, verify=False)
+                            return r
 
                     elif (received_msg == 'ยกเลิก'):
                         self.update_add_menu(0)
