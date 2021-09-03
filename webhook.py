@@ -57,6 +57,8 @@ class Webhook(Resource):
 
         add_flg = self.readaddStatus()
         print("add_flg : "+str(add_flg[0]['result'][0]['add_device']))
+        edit_flg = self.readeditStatus()
+        print("edit_flg : "+str(edit_flg[0]['result'][0]['edit_device']))
         del_flg = self.readdeleteStatus()
         print("del_flg : "+str(del_flg[0]['result'][0]['delete_device']))
         device_name_flg = self.readdeviceNameStatus()
@@ -615,9 +617,10 @@ class Webhook(Resource):
                                                   headers=self.sendmessage_headers, verify=False)
                                 return r
 
-                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0) and (change_name_flg[0]['result'][0]['change_name'] == 0)):
+                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (edit_flg[0]['result'][0]['edit_device'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 0)):
                     self.update_menu_name(received_msg)
                     self.update_change_name_status(1)
+                    self.update_edit_device_menu(0)
                     sendmessage_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
@@ -1133,6 +1136,7 @@ class Webhook(Resource):
                 elif((received_msg == 'แก้ไขเมนู') or (received_msg == 'เพิ่มเมนู') or (received_msg == 'ลบเมนู')):
                     self.update_edit_menu(1)
                     if (received_msg == 'แก้ไขเมนู'):
+                        self.update_edit_device_menu(1)
                         device_id = self.get_device_id_status()
                         menu_id = self.find_menu_permission(
                             device_id[0]['result'][0]['device_id'])
@@ -1651,6 +1655,14 @@ class Webhook(Resource):
         print("message: " + str(message))
         return message
 
+    def readeditStatus(self):
+        print("readeditStatus")
+        database = Database()
+        sql = """SELECT status_message.edit_device FROM status_message"""
+        message = database.getData(sql)
+        print("message: " + str(message))
+        return message
+
     def readdeleteStatus(self):
         print("readdeleteStatus")
         database = Database()
@@ -2087,6 +2099,13 @@ class Webhook(Resource):
         TAG = "update_edit_menu:"
         database = Database()
         sql = """UPDATE `status_message` SET `edit_menu`='%s' """ % (edt_m)
+        update = database.insertData(sql)
+        return update
+
+    def update_edit_device_menu(self, edt_d_m):
+        TAG = "update_edit_device_menu:"
+        database = Database()
+        sql = """UPDATE `status_message` SET `edit_device`='%s' """ % (edt_d_m)
         update = database.insertData(sql)
         return update
 
