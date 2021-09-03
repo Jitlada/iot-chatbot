@@ -1217,7 +1217,7 @@ class Webhook(Resource):
                 elif((received_msg == 'แก้ไขเมนู')):
                     self.update_edit_menu(1)
                     if (received_msg == 'แก้ไขเมนู'):
-                        self.update_edit_device_menu(1)
+                        # self.update_edit_device_menu(1)
                         device_id = self.get_device_id_status()
                         menu_id = self.find_menu_permission(
                             device_id[0]['result'][0]['device_id'])
