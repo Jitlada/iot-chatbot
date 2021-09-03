@@ -618,7 +618,7 @@ class Webhook(Resource):
                                 return r
 
                 # and (edit_flg[0]['result'][0]['edit_device'] == 1)
-                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 0)):
+                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
                     self.update_menu_name(received_msg)
                     self.update_change_name_status(1)
                     # self.update_edit_device_menu(0)
