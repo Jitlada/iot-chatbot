@@ -620,7 +620,6 @@ class Webhook(Resource):
                 if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (edit_flg[0]['result'][0]['edit_device'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 0)):
                     self.update_menu_name(received_msg)
                     self.update_change_name_status(1)
-                    self.update_edit_device_menu(0)
                     sendmessage_body = {
                         "to": one_id,
                         "bot_id": self.onechatbot_id,
@@ -632,7 +631,7 @@ class Webhook(Resource):
                         self.sendmessage_url, json=sendmessage_body, headers=self.sendmessage_headers, verify=False)
                     return sendmessage
 
-                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
+                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (edit_flg[0]['result'][0]['edit_device'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
                     self.update_new_name_status(received_msg)
                     self.update_add_command_menu(1)
                     sendmessage_body = {
@@ -655,7 +654,7 @@ class Webhook(Resource):
                     #     if (received_msg == item_menu['label']):
                     #         print()
 
-                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 1)):
+                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (edit_flg[0]['result'][0]['edit_device'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 1) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 1)):
                     self.update_command_menu(received_msg)
                     self.update_change_name_status(0)
                     payload = [
@@ -684,7 +683,7 @@ class Webhook(Resource):
                                       headers=self.sendmessage_headers, verify=False)
                     return r
 
-                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 1)):
+                if ((edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (edit_flg[0]['result'][0]['edit_device'] == 1) and (change_name_flg[0]['result'][0]['change_name'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 1)):
                     if (received_msg == 'ตกลง'):
                         new_n_msg = self.get_name_menu_status()
                         old_n = self.get_menu_name()
@@ -698,6 +697,7 @@ class Webhook(Resource):
                         self.update_add_command_menu(0)
                         self.update_command_menu("")
                         self.update_edit_menu(0)
+                        self.update_edit_device_menu(0)
 
                         device_id_s = self.get_device_id_status()
                         menu_id = self.find_menu_permission(
@@ -762,6 +762,7 @@ class Webhook(Resource):
                         self.update_add_command_menu(0)
                         self.update_command_menu("")
                         self.update_edit_menu(0)
+                        self.update_edit_device_menu(0)
 
                         device_id_s = self.get_device_id_status()
                         menu_id = self.find_menu_permission(
