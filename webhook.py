@@ -709,7 +709,18 @@ class Webhook(Resource):
                                               headers=self.sendmessage_headers, verify=False)
                             return r
 
-                if ((delete_m_flg[0]['result'][0]['delete_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1)):
+                if ((delete_m_flg[0]['result'][0]['delete_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (received_msg == 'ยกเลิก')):
+                    if (received_msg == 'ตกลง'):
+                        self.update_menu_name("")
+                        self.update_delete_menu(0)
+                        reply_msg = ""
+                        send_quick_reply_manage1 = self.send_quick_reply_manage_edit_device(
+                            one_id, reply_msg)
+                        r = requests.post(self.onechat_url1, json=send_quick_reply_manage1,
+                                          headers=self.sendmessage_headers, verify=False)
+                        return r
+
+                if ((delete_m_flg[0]['result'][0]['delete_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (received_msg != 'ยกเลิก')):
                     self.update_menu_name(received_msg)
                     self.update_edit_menu(0)
                     payload = [
