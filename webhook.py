@@ -710,7 +710,7 @@ class Webhook(Resource):
                             return r
 
                 if ((delete_m_flg[0]['result'][0]['delete_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 1) and (received_msg == 'ยกเลิก')):
-                    if (received_msg == 'ตกลง'):
+                    if (received_msg == 'ยกเลิก'):
                         self.update_menu_name("")
                         self.update_delete_menu(0)
                         self.update_edit_menu(0)
