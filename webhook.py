@@ -481,6 +481,8 @@ class Webhook(Resource):
                     return r
 
                 if ((add_m_flg[0]['result'][0]['add_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
+                    print(
+                        "i'm hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
                     if (received_msg == 'ตกลง'):
                         name_payload_status = self.get_name_menu_status()
                         new_menu = self.add_new_menu(name_payload_status[0]['result'][0]['new_device_name'], name_payload_status[0]
