@@ -481,12 +481,11 @@ class Webhook(Resource):
                     return r
 
                 if ((add_m_flg[0]['result'][0]['add_menu'] == 1) and (edit_m_flg[0]['result'][0]['edit_menu'] == 0) and (add__c_m_flg[0]['result'][0]['add_command_menu'] == 0)):
-                    print(
-                        "i'm hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
                     if (received_msg == 'ตกลง'):
+                        device_i = self.get_device_id_status()
                         name_payload_status = self.get_name_menu_status()
                         new_menu = self.add_new_menu(name_payload_status[0]['result'][0]['new_device_name'], name_payload_status[0]
-                                                     ['result'][0]['new_device_name'], name_payload_status[0]['result'][0]['command_menu'])
+                                                     ['result'][0]['new_device_name'], name_payload_status[0]['result'][0]['command_menu'], device_i[0]['result'][0]['device_id'])
                         find_menu_id = self.find_menu_id(
                             name_payload_status[0]['result'][0]['new_device_name'])
                         device_id = self.get_device_id_status()
@@ -2148,11 +2147,11 @@ class Webhook(Resource):
         return insert
         # return sql
 
-    def add_new_menu(self, label_m, message_m, payload_m):
+    def add_new_menu(self, label_m, message_m, payload_m, device_id):
         TAG = "add_new_menu:"
         database = Database()
-        sql = """INSERT INTO `menu`(`label`, `message`, `action_payload`) VALUES ('%s', '%s', '%s')""" % (
-            label_m, message_m, payload_m)
+        sql = """INSERT INTO `menu`(`label`, `message`, `action_payload`, `device_id`) VALUES ('%s', '%s', '%s', '%s')""" % (
+            label_m, message_m, payload_m, device_id)
         print("sqlsqlsqlsqlsqlsqlsqlsqlsql : " + sql)
         new_menu = database.insertData(sql)
         return new_menu
