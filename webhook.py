@@ -1136,6 +1136,9 @@ class Webhook(Resource):
                     # if((received_msg == 'แก้ไขอุปกรณ์')):
                     if(received_msg == item['device_name']):
                         self.update_status(0, 0, 0, 0, 0, 0, received_msg)
+                        device_id = self.find_device_id(received_msg)
+                        self.update_device_id_status(
+                            device_id[0]['result'][0]['device_id'])
 
                         # device_id = self.find_device_id(received_msg)
                         # self.update_device_id_status(
