@@ -223,6 +223,13 @@ class Webhook(Resource):
 
         else:
             for item in devices[0]['result']:
+
+                # device_id_s = self.get_device_id_status()
+                # menu_id = self.find_menu_permission(device_id_s[0]['result'][0]['device_id'])
+                # for itemmenu in menu_id[0]['result']:
+                #     menu_name = self.find_menu_name(itemmenu['menu_id'])
+                #     if (received_msg == menu_name[0]['result'][0]['label']):
+
                 count+1
                 # print("itemmmmmmmmmmmm : " + item['device_name'])
 
@@ -2348,10 +2355,10 @@ class Webhook(Resource):
 
                 # self.menu_send(one_id, recv_msg)
                 # return module.success()
-                if(self.check_permission(one_id)):
-                    print(TAG, "check permission before send menu")
-                    self.menu_send(one_id, recv_msg)
-                    return module.success()
+                # if(self.check_permission(one_id)):
+                # print(TAG, "check permission before send menu")
+                self.menu_send(one_id, recv_msg)
+                return module.success()
 
             elif(data["event"] == 'add_friend'):
                 one_id = data['source']['one_id']
